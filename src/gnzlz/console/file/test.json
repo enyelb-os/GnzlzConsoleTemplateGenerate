@@ -1,0 +1,32 @@
+{
+  "project" : "name",
+  "version" : "1.0",
+  "templates" : [
+    {
+      "name": "name",
+      "path" : "ruta",
+      "type" : "model|catalog|scheme|none"
+    }
+  ],
+  "commands": [
+    {
+      "name": "name",
+      "requarid": true,
+      "type": "number|string",
+      "options" : [
+        {
+          "option": "name"
+        }
+      ],
+      "value": "default"
+    }
+  ],
+  "groups": [
+    {
+      "command": "name",
+      "use": ["commandName","commandName","commandName"],
+      "templates": ["name","name","name"],
+      "groups": []
+    }
+  ]
+}
