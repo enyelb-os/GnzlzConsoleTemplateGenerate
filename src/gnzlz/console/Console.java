@@ -2,11 +2,16 @@ package gnzlz.console;
 
 import gnzlz.console.file.json.JSON;
 import gnzlz.console.file.json.Project;
-import tools.gnzlz.command.*;
-import tools.gnzlz.command.funtional.FunctionRequiredCommand;
-import tools.gnzlz.command.type.CommandInteger;
-import tools.gnzlz.command.type.CommandOption;
-import tools.gnzlz.command.type.CommandString;
+import tools.gnzlz.command.command.Command;
+import tools.gnzlz.command.command.functional.FunctionRequiredCommand;
+import tools.gnzlz.command.command.object.ListCommand;
+import tools.gnzlz.command.command.type.CommandInteger;
+import tools.gnzlz.command.command.type.CommandOptionString;
+import tools.gnzlz.command.command.type.CommandString;
+import tools.gnzlz.command.group.GroupCommand;
+import tools.gnzlz.command.group.ParentGroupCommand;
+import tools.gnzlz.command.init.InitListCommand;
+import tools.gnzlz.command.result.ResultListCommand;
 
 public class Console {
 
@@ -32,7 +37,7 @@ public class Console {
         FunctionRequiredCommand requiredDBFile = (commands) -> commands.string("type").equalsIgnoreCase("sqlite");
         FunctionRequiredCommand requiredDbServer = (commands) -> commands.string("type").equalsIgnoreCase("mysql") || commands.string("type").equalsIgnoreCase("postgresql");
 
-        TYPE      = CommandOption.create("type").message("Type connection").required().option("mysql", "postgresql", "sqlite").commands("--type", "-t");
+        TYPE      = CommandOptionString.create("type").message("Type connection").required().option("mysql", "postgresql", "sqlite").commands("--type", "-t");
         HOST      = CommandString.create("host").message("host").required(requiredDbServer).value("localhost").commands("--host", "-h");
         PORT      = CommandInteger.create("port").message("port").required(requiredDbServer).value(-1).commands("--port");
         USER      = CommandString.create("user").message("user").required(requiredDbServer).value("root").commands("--user", "-u");
@@ -74,7 +79,7 @@ public class Console {
 
     public static void createFileProject(String path, String file) {
         Project oldProject = JSON.file(path + file);
-        ResultListCommand oldCommands = CommandParse.parseProjectToCommands(oldProject);
+        InitListCommand oldCommands = CommandParse.parseProjectToCommands(oldProject);
         ResultListCommand newCommands = ConsoleProject.processCommandsCreateProjectJSon(oldCommands);
         Project newProject = CommandParse.parseCommandsToProject(newCommands);
         JSON.save(path + file, newProject);
