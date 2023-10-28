@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../GnzlzCommand/GnzlzCommand.iml" filepath="$PROJECT_DIR$/../GnzlzCommand/GnzlzCommand.iml" />
       <module fileurl="file://$PROJECT_DIR$/GnzlzConsoleTemplateGenerate.iml" filepath="$PROJECT_DIR$/GnzlzConsoleTemplateGenerate.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../GnzlzDBModel/GnzlzDBModel.iml" filepath="$PROJECT_DIR$/../GnzlzDBModel/GnzlzDBModel.iml" />
     </modules>
   </component>
 </project>
