@@ -1,4 +1,7 @@
+import gnzlz.console.CommandParse;
 import gnzlz.console.Console;
+import gnzlz.console.ConsoleProject;
+import gnzlz.console.file.json.JSON;
 
 public class Main {
 
@@ -8,7 +11,7 @@ public class Main {
         //JSON.file("project.gnzlz.json");
 
         String path = "project.gnzlz.test.json";
-        /*String path2 = "project.gnzlz.test.json";
+        String path2 = "project.gnzlz.test.json";
 
 
         JSON.save(path2,
@@ -18,8 +21,8 @@ public class Main {
                 )//,
                 //JSON.file(path)
             )
-        );*/
+        );
 
-        Console.main(args, path);
+        //Console.main(args, path);
     }
 }

@@ -43,8 +43,8 @@ public class ConsoleProject {
     private static ListCommand commands = ListCommand.create();
 
     static {
-        PROJECT             = CommandString.create("project").required(true).message("Project name");
-        VERSION             = CommandString.create("version").required(true).message("Version").value("1.0");
+        PROJECT             = CommandString.create("project").required().message("Project name");
+        VERSION             = CommandString.create("version").required().message("Version").value("1.0");
         TEMPLATE_NAME       = CommandString.create("name").required().message("Template name");
         TEMPLATE_PATH       = CommandString.create("path").required().message("Path file");
         TEMPLATE_TYPE       = CommandOptionString.create("type").required().message("Template type").option("model","catalog","scheme","none");
