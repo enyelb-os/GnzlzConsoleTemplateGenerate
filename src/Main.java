@@ -10,7 +10,7 @@ public class Main {
 
         //JSON.file("project.gnzlz.json");
 
-        String path = "project.gnzlz.test.json";
+        /*String path = "project.gnzlz.test.json";
         String path2 = "project.gnzlz.test.json";
 
 
@@ -21,8 +21,8 @@ public class Main {
                 )//,
                 //JSON.file(path)
             )
-        );
+        );*/
 
-        //Console.main(args, path);
+        Console.main(args);
     }
 }
