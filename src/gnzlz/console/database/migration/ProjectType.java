@@ -3,11 +3,11 @@ package gnzlz.console.database.migration;
 import tools.gnzlz.database.model.DBMigration;
 import tools.gnzlz.database.properties.PropertiesTable;
 
-public class Project extends DBMigration {
+public class ProjectType extends DBMigration {
 
     @Override
     public String tableName() {
-        return "project";
+        return "project_type";
     }
 
     @Override
@@ -18,8 +18,6 @@ public class Project extends DBMigration {
     @Override
     protected void initTable(PropertiesTable table) {
         table.primaryKey("id", INTEGER);
-        table.column("name", VARCHAR, 100).notNull();
-        table.column("path", VARCHAR, 200).notNull();
-        table.column("type", INTEGER).foreignKey(ProjectType.class).notNull();
+        table.column("description",VARCHAR, 100).notNull();
     }
 }

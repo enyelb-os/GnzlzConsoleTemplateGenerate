@@ -1,12 +1,9 @@
-import gnzlz.console.CommandParse;
-import gnzlz.console.Console;
-import gnzlz.console.ConsoleProject;
-import gnzlz.console.file.json.JSON;
+import gnzlz.console.database.sqlite.config.ConfigSQLite;
 
 public class Main {
 
     public static void main(String[] args) {
-        //System.out.println("Test "+ConfigSQLite.connection.query("Select 1+1").execute());
+        System.out.println("Test "+ ConfigSQLite.connection.query("Select 1+1").execute());
 
         //JSON.file("project.gnzlz.json");
 
@@ -23,6 +20,6 @@ public class Main {
             )
         );*/
 
-        Console.main(args);
+       // ConsoleDatabase.main(args);
     }
 }
