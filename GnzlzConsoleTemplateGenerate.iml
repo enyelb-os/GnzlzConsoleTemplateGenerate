@@ -9,7 +9,8 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="GnzlzCommand" exported="" />
     <orderEntry type="module" module-name="GnzlzDBModel" exported="" />
-    <orderEntry type="library" exported="" name="sqlite-jdbc-3.21.0" level="project" />
+    <orderEntry type="module" module-name="GnzlzDBModelFileTemplete" exported="" />
     <orderEntry type="library" exported="" name="gson-2.10.1" level="project" />
+    <orderEntry type="library" exported="" name="sqlite-jdbc-3.21.0" level="project" />
   </component>
 </module>

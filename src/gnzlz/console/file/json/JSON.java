@@ -4,19 +4,37 @@ package gnzlz.console.file.json;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import gnzlz.console.file.json.project.data.Project;
 
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 
 public class JSON {
 
-    public static Project project;
+    /**
+     * updateAndCreate
+     * @param <T> t
+     * @param path p
+     * @param json j
+     * @param typeClass t
+     */
 
-    /**********************************
-     * static
-     **********************************/
+    public static <T> T updateAndCreate(String path, T json, Class<T> typeClass){
+        T dataJson = JSON.create(path, typeClass);
+        if (json == null) {
+            json = dataJson;
+        }
+        return save(path, json);
+    }
 
-    public static void updateAndCreate(String path){
+    /**
+     * create
+     * @param <T> t
+     * @param path p
+     * @param typeClass t
+     */
+    public static <T> T create(String path, Class<T> typeClass){
         File file = new File(path);
 
         if(file.exists()) {
@@ -24,56 +42,36 @@ public class JSON {
                 FileReader fileReader = new FileReader(file);
                 Type type = new TypeToken<Project>(){}.getType();
                 Gson gson = new Gson();
-                project = gson.fromJson(fileReader, type);
+                T t = gson.fromJson(fileReader, type);
                 fileReader.close();
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        } else {
-
-            try {
-                FileWriter fileWriter = new FileWriter(path);
-                Gson gson =  new GsonBuilder().setPrettyPrinting().create();
-                gson.toJson(project, fileWriter);
-                fileWriter.close();
+                return t;
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
-
-    }
-
-    public static Project file(String path){
-        File file = new File(path);
-
-        if(file.exists()) {
-            try {
-                FileReader fileReader = new FileReader(file);
-                Type type = new TypeToken<Project>(){}.getType();
-                Gson gson = new Gson();
-                Project project = gson.fromJson(fileReader, type);
-                fileReader.close();
-                return project;
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+        try {
+            return typeClass.getDeclaredConstructor().newInstance();
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            return null;
         }
-        return Project.create();
     }
 
-    public static void save(String path, Project project){
+    /**
+     * updateAndCreate
+     * @param <T> t
+     * @param path p
+     * @param json j
+     */
+    public static <T> T save(String path, T json){
         File file = new File(path);
         try {
             FileWriter fileWriter = new FileWriter(path);
             Gson gson =  new GsonBuilder().setPrettyPrinting().create();
-            gson.toJson(project, fileWriter);
+            gson.toJson(json, fileWriter);
             fileWriter.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        return json;
     }
 }

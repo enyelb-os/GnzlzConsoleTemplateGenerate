@@ -1,6 +1,8 @@
-package gnzlz.console;
+package gnzlz.console.process.project;
 
-import tools.gnzlz.command.command.object.ListCommand;
+import gnzlz.console.file.json.JSON;
+import gnzlz.console.process.project.controller.ProjectController;
+import gnzlz.console.file.json.project.data.Project;
 import tools.gnzlz.command.init.InitListCommand;
 import tools.gnzlz.command.process.Process;
 import tools.gnzlz.command.result.ResultListCommand;
@@ -8,6 +10,7 @@ import tools.gnzlz.command.command.type.CommandArray;
 import tools.gnzlz.command.command.type.CommandBoolean;
 import tools.gnzlz.command.command.type.CommandOptionString;
 import tools.gnzlz.command.command.type.CommandString;
+import tools.gnzlz.command.command.object.ListCommand;
 
 public class ConsoleProject {
 
@@ -181,16 +184,59 @@ public class ConsoleProject {
     /**
      * commands
      */
-    private static ListCommand commands = ListCommand
+    private static final ListCommand commandsDataProject = ListCommand
         .create()
         .addCommand(PROJECT, VERSION, TEMPLATES, COMMANDS, GROUP_GROUP);
 
 
     /**
      * processCommandsCreateProjectJSon
-     * @param old initListCommand
+     * @param path path
+     * @param file file
      */
-    public static ResultListCommand processCommandsCreateProjectJSon(InitListCommand old){
-        return Process.questions(commands, old);
+
+    public static void processCommandsCreateProjectJSon(String path, String file, String ... args) {
+        Project oldProject = JSON.create(path + file, Project.class);
+        InitListCommand oldCommands = ProjectController.parseProjectToCommands(oldProject);
+        ResultListCommand newCommands = Process.questions(commandsDataProject, oldCommands);
+        Project newProject = ProjectController.parseCommandsToProject(newCommands);
+        JSON.save(path + file, newProject);
+    }
+
+    /**
+     * PROJECT_PATH
+     */
+    public final static CommandString PROJECT_PATH = CommandString
+        .create("project_path")
+        .commands("--projectpath", "-propath")
+        .required()
+        .message("Project path")
+        .value(System.getProperty("user.dir"));
+
+    /**
+     * PROJECT_NAME
+     */
+    public static CommandString PROJECT_NAME = CommandString
+        .create("project_name")
+        .required()
+        .message("Project file name")
+        .value("project.gnzlz.test.json");
+
+    /**
+     * commandsCreateProject
+     */
+    private static final ListCommand commandsCreateProject = ListCommand
+        .create()
+        .addCommand(PROJECT_PATH, PROJECT_NAME);
+
+
+    /**
+     * processCommandsCreateProjectJSon
+     */
+    public static void processCommandsCreateProjectJSon(String ... args) {
+        InitListCommand oldCommands = InitListCommand.create();
+        ResultListCommand commands = Process.questions(commandsCreateProject, oldCommands);
+
+        ConsoleProject.processCommandsCreateProjectJSon(commands.string("project_path"), commands.string("project_name"), args);
     }
 }

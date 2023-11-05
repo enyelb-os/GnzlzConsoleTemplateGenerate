@@ -19,8 +19,8 @@ public class ConfigSQLite extends DBConfiguration {
     @Override
     protected void initConnection(PropertiesConnection connection) {
         connection
-                .dialect(SQLite).protocol(JDBC.PREFIX).driver(new JDBC())
-                .path(System.getProperty("user.dir").concat("/")).name("config.db");
+            .dialect(SQLite).protocol(JDBC.PREFIX).driver(new JDBC())
+            .path(System.getProperty("user.dir").concat("/")).name("config.db");
     }
 
     @Override

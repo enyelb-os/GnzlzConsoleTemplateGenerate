@@ -1,4 +1,6 @@
-import gnzlz.console.ConsoleDatabase;
+package gnzlz.console;
+
+import gnzlz.console.process.database.ConsoleDatabase;
 import gnzlz.console.database.sqlite.config.ConfigSQLite;
 
 public class Main {

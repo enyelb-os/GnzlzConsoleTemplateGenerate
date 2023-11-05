@@ -1,11 +1,16 @@
-package gnzlz.console;
+package gnzlz.console.process.project.controller;
 
-import gnzlz.console.file.json.*;
+import gnzlz.console.process.project.ConsoleProject;
+import gnzlz.console.file.json.project.data.*;
 import tools.gnzlz.command.init.InitListCommand;
 import tools.gnzlz.command.result.ResultListCommand;
 
-public class CommandParse {
+public class ProjectController {
 
+    /**
+     * parseCommandsToProject
+     * @param command c
+     */
     public static Project parseCommandsToProject(ResultListCommand command) {
 
         Project project = Project.create();
@@ -36,6 +41,12 @@ public class CommandParse {
         return project;
     }
 
+    /**
+     * parseGroupsToGroup
+     * @param project p
+     * @param group g
+     * @param command c
+     */
     private static void parseGroupsToGroup(Project project, Group group, ResultListCommand command) {
         for (ResultListCommand commandGroup : command.array("groups")) {
             Group groups = Group.create().command(commandGroup.string("command"));
@@ -55,7 +66,14 @@ public class CommandParse {
         }
     }
 
+    /**
+     * parseProjectToCommands
+     * @param project p
+     */
     public static InitListCommand parseProjectToCommands(Project project) {
+        if (project == null) {
+            return InitListCommand.create();
+        }
         return InitListCommand.create()
             .addCommand(ConsoleProject.PROJECT, project.name())
             .addCommand(ConsoleProject.VERSION, project.version())
@@ -71,9 +89,13 @@ public class CommandParse {
                 .addCommand(ConsoleProject.COMMAND_OPTIONS, command.options(), (option) -> InitListCommand.create()
                     .addCommand(ConsoleProject.COMMAND_OPTION, option.option())
                 )
-            ).addCommand(ConsoleProject.GROUP_GROUP, project.groups(), CommandParse::parseGroupsToGroup);
+            ).addCommand(ConsoleProject.GROUP_GROUP, project.groups(), ProjectController::parseGroupsToGroup);
     }
 
+    /**
+     * parseGroupsToGroup
+     * @param group g
+     */
     private static InitListCommand parseGroupsToGroup(Group group) {
         return InitListCommand.create()
             .addCommand(ConsoleProject.GROUP_NAME, group.command())
@@ -81,6 +103,6 @@ public class CommandParse {
                 .addCommand(ConsoleProject.GROUP_COMMAND_NAME, use)
             ).addCommand(ConsoleProject.GROUP_TEMPLATES, group.templates(), (template) -> InitListCommand.create()
                 .addCommand(ConsoleProject.GROUP_TEMPLATE_NAME, template)
-            ).addCommand(ConsoleProject.GROUP_GROUP, group.groups(), CommandParse::parseGroupsToGroup);
+            ).addCommand(ConsoleProject.GROUP_GROUP, group.groups(), ProjectController::parseGroupsToGroup);
     }
 }
