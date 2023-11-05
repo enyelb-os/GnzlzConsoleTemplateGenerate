@@ -1,9 +1,9 @@
 
 package  gnzlz.console.database.sqlite.config.model.custom;
 
-import  gnzlz.console.database.sqlite.config.model.DatabaseProject;
+import  gnzlz.console.database.sqlite.config.model.ProjectType;
 
-public interface ICDatabaseProject {
+public interface ICProjectType {
 
     /*******************************************
 	 * @Example
@@ -13,6 +13,6 @@ public interface ICDatabaseProject {
 	 * }
 	 *******************************************/
 
-    public DatabaseProject modelDB();
+    public ProjectType modelDB();
 
 }

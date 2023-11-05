@@ -1,19 +1,20 @@
 
 package gnzlz.console.database.sqlite.config.model.base;
 
+import java.util.ArrayList;
 import gnzlz.console.database.sqlite.config.ConfigSQLite;
-import gnzlz.console.database.sqlite.config.model.Database;
-import gnzlz.console.database.sqlite.config.model.DatabaseProject;
-import gnzlz.console.database.sqlite.config.model.Project;
-import tools.gnzlz.database.model.DBModel;
+
 import tools.gnzlz.database.model.DBTable;
+import tools.gnzlz.database.model.DBModel;
 import tools.gnzlz.database.query.model.Select;
 
-import java.util.ArrayList;
+import gnzlz.console.database.sqlite.config.model.DatabaseProject;
+import gnzlz.console.database.sqlite.config.model.Database;
+import gnzlz.console.database.sqlite.config.model.Project;
 
 public class BaseDatabase<Type extends DBModel<Type>> extends DBModel<Database> {
 
-    public static final String TABLE = "gnzlz/console/database";
+    public static final String TABLE = "database";
     public static final String ID = "id";
     public static final String TYPE = "type";
     public static final String PATH = "path";

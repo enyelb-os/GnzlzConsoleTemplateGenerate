@@ -1,7 +1,7 @@
 
-package gnzlz.console.database.sqlite.config.model.custom;
+package  gnzlz.console.database.sqlite.config.model.custom;
 
-import gnzlz.console.database.sqlite.config.model.Project;
+import  gnzlz.console.database.sqlite.config.model.Project;
 
 public interface ICProject {
 

@@ -1,3 +1,4 @@
+import gnzlz.console.ConsoleDatabase;
 import gnzlz.console.database.sqlite.config.ConfigSQLite;
 
 public class Main {
@@ -20,6 +21,6 @@ public class Main {
             )
         );*/
 
-       // ConsoleDatabase.main(args);
+       ConsoleDatabase.main(args);
     }
 }

@@ -1,21 +1,22 @@
 
 package gnzlz.console.database.sqlite.config.model.base;
 
+import java.util.ArrayList;
 import gnzlz.console.database.sqlite.config.ConfigSQLite;
-import gnzlz.console.database.sqlite.config.model.Database;
-import gnzlz.console.database.sqlite.config.model.DatabaseProject;
-import gnzlz.console.database.sqlite.config.model.Project;
-import tools.gnzlz.database.model.DBModel;
+
 import tools.gnzlz.database.model.DBTable;
+import tools.gnzlz.database.model.DBModel;
 import tools.gnzlz.database.query.model.Select;
 
-import java.util.ArrayList;
+import gnzlz.console.database.sqlite.config.model.DatabaseProject;
+import gnzlz.console.database.sqlite.config.model.Database;
+import gnzlz.console.database.sqlite.config.model.Project;
 
 public class BaseDatabaseProject<Type extends DBModel<Type>> extends DBModel<DatabaseProject> {
 
     public static final String TABLE = "database_project";
     public static final String ID = "id";
-    public static final String DATABASE = "gnzlz/console/database";
+    public static final String DATABASE = "database";
     public static final String PROJECT = "project";
     public static final String NAME = "name";
 

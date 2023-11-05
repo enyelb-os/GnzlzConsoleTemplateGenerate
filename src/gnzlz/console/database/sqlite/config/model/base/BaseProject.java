@@ -1,15 +1,17 @@
 
 package gnzlz.console.database.sqlite.config.model.base;
 
+import java.util.ArrayList;
 import gnzlz.console.database.sqlite.config.ConfigSQLite;
-import gnzlz.console.database.sqlite.config.model.Database;
-import gnzlz.console.database.sqlite.config.model.DatabaseProject;
-import gnzlz.console.database.sqlite.config.model.Project;
-import tools.gnzlz.database.model.DBModel;
+
 import tools.gnzlz.database.model.DBTable;
+import tools.gnzlz.database.model.DBModel;
 import tools.gnzlz.database.query.model.Select;
 
-import java.util.ArrayList;
+import gnzlz.console.database.sqlite.config.model.DatabaseProject;
+import gnzlz.console.database.sqlite.config.model.Project;
+import gnzlz.console.database.sqlite.config.model.Database;
+import gnzlz.console.database.sqlite.config.model.ProjectType;
 
 public class BaseProject<Type extends DBModel<Type>> extends DBModel<Project> {
 
@@ -17,11 +19,13 @@ public class BaseProject<Type extends DBModel<Type>> extends DBModel<Project> {
     public static final String ID = "id";
     public static final String NAME = "name";
     public static final String PATH = "path";
+    public static final String TYPE = "type";
 
     private static final DBTable DBTABLE = DBTable.create()
         .addConfiguration(ConfigSQLite.class)
         .addTable(TABLE).addPrimaryKey(ID)
-        .addColumns(ID ,NAME ,PATH)
+        .addColumns(ID ,NAME ,PATH ,TYPE)
+        .addHasOne(TYPE, ProjectType.class, ProjectType.ID)
         .addHasMany(ID, DatabaseProject.class, DatabaseProject.PROJECT)
         .addBelongsToMany(ID, DatabaseProject.PROJECT, DatabaseProject.class, DatabaseProject.DATABASE, Database.class, Database.ID);
 
@@ -53,6 +57,15 @@ public class BaseProject<Type extends DBModel<Type>> extends DBModel<Project> {
 
     public Type path(String path) {
         set(PATH, path);
+        return (Type) this;
+    }
+
+    public int type() {
+        return get(TYPE).intValue();
+    }
+
+    public Type type(int type) {
+        set(TYPE, type);
         return (Type) this;
     }
 
