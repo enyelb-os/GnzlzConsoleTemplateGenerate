@@ -1,5 +1,6 @@
 package gnzlz.console.process;
 
+import gnzlz.console.process.build.ConsoleBuildProject;
 import gnzlz.console.process.database.ConsoleDatabase;
 import gnzlz.console.process.project.ConsoleProject;
 import tools.gnzlz.command.group.GroupCommand;
@@ -14,7 +15,7 @@ public class ConsoleMain {
     /**
      * GROUP_EXIT
      */
-    private final static GroupCommand GROUP_EXIT= GroupCommand.create("exit").execute(command -> {
+    private final static GroupCommand GROUP_EXIT= GroupCommand.create("exit").execute((args, command) -> {
         exit = true;
     });
 
@@ -24,26 +25,28 @@ public class ConsoleMain {
     private final static ParentGroupCommand PARENT = GroupCommand.parent().addGroup(
         GroupCommand.create("project").addGroup(
             GroupCommand.create("db").addGroup(
-                GroupCommand.create("create").execute(command -> {
-                    ConsoleProject.createAndUpdateProjectJson(true);
+                GroupCommand.create("create").execute((args, command) -> {
+                    ConsoleProject.createAndUpdateProjectJson(true, args);
                 }), GROUP_EXIT
             ),
             GroupCommand.create().addGroup(
-                GroupCommand.create("create").execute(command -> {
-                    ConsoleProject.createAndUpdateProjectJson(false);
+                GroupCommand.create("create").execute((args, command) -> {
+                    ConsoleProject.createAndUpdateProjectJson(false, args);
                 }), GROUP_EXIT
             )
         ),
         GroupCommand.create("config").addGroup(
             GroupCommand.create("db").addGroup(
-                GroupCommand.create("create").execute(command -> {
-                    ConsoleDatabase.createDatabase();
+                GroupCommand.create("create").execute((args, command) -> {
+                    ConsoleDatabase.createDatabase(args);
                 }), GROUP_EXIT
             )
         ),
-        GroupCommand.create("build").execute(command -> {
-
-        }), GROUP_EXIT
+        GroupCommand.create("build").addGroup(
+            GroupCommand.create("project").execute((args, command) -> {
+                ConsoleBuildProject.buildProject(args);
+            }), GROUP_EXIT
+        ), GROUP_EXIT
     );
 
     /**

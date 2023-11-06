@@ -106,4 +106,12 @@ public class ProjectController {
                 .addCommand(ConsoleProject.GROUP_TEMPLATE_NAME, template)
             ).addCommand(ConsoleProject.GROUP_GROUP, group.groups(), ProjectController::parseGroupsToGroup);
     }
+
+    /**
+     * getProject
+     * @param path p
+     */
+    public static Project getProject(String path) {
+        return JSON.create(path, Project.class);
+    }
 }

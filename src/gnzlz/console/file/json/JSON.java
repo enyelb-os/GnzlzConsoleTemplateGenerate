@@ -47,8 +47,27 @@ public class JSON {
      * @param typeClass t
      */
     public static <T> T create(String path, Class<T> typeClass){
-        File file = new File(path);
+        T t = get(path, typeClass);
+        if (t == null) {
+            try {
+                return typeClass.getDeclaredConstructor().newInstance();
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                return null;
+            }
+        } else {
+            return t;
+        }
 
+    }
+
+    /**
+     * create
+     * @param <T> t
+     * @param path p
+     * @param typeClass t
+     */
+    public static <T> T get(String path, Class<T> typeClass){
+        File file = new File(path);
         if(file.exists()) {
             try {
                 FileReader fileReader = new FileReader(file);
@@ -61,11 +80,7 @@ public class JSON {
                 throw new RuntimeException(e);
             }
         }
-        try {
-            return typeClass.getDeclaredConstructor().newInstance();
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            return null;
-        }
+        return null;
     }
 
     /**

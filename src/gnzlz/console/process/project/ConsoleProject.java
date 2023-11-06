@@ -199,7 +199,7 @@ public class ConsoleProject {
 
     public static void createAndUpdateProjectJson(String path, String file, String db, String ... args) {
         InitListCommand oldCommands = ProjectController.parseProjectToInitListCommand(path, file);
-        ResultListCommand newCommands = Process.questions(commandsDataProject, oldCommands);
+        ResultListCommand newCommands = Process.argsAndQuestions(args, commandsDataProject, oldCommands);
         if (ProjectController.createProject(path, file, newCommands) != null) {
             Project project = DatabaseController.createProject(path, file, newCommands.string("project"), db);
         }
@@ -247,7 +247,7 @@ public class ConsoleProject {
     public static void createAndUpdateProjectJson(boolean db, String ... args) {
         InitListCommand oldCommands = InitListCommand.create();
         PROJECT_DATABASE.required(db);
-        ResultListCommand commands = Process.questions(commandsCreateProject, oldCommands);
+        ResultListCommand commands = Process.argsAndQuestions(args, commandsCreateProject, oldCommands);
         String name = commands.string("project_path");
         String file = commands.string("project_name");
         String database = db ? commands.string("project_database") : "none";

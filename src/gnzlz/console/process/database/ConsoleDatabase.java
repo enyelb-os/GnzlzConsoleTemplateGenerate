@@ -20,7 +20,7 @@ public class ConsoleDatabase {
      */
     public static void createDatabase(String ... args) {
         InitListCommand oldCommands = InitListCommand.create();
-        ResultListCommand newCommands = Process.questions(Console.listCommandDB, oldCommands);
+        ResultListCommand newCommands = Process.argsAndQuestions(args, Console.listCommandDB, oldCommands);
         Database database = DatabaseController.createDatabase(newCommands);
     }
 }
