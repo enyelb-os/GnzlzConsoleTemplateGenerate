@@ -1,5 +1,6 @@
 package gnzlz.console.process.build;
 
+import gnzlz.console.file.json.JSON;
 import gnzlz.console.file.json.project.data.Project;
 import gnzlz.console.process.project.ConsoleProject;
 import gnzlz.console.process.project.controller.ProjectController;
@@ -13,6 +14,7 @@ import tools.gnzlz.command.result.ResultListCommand;
 import tools.gnzlz.filetemplete.Console;
 import tools.gnzlz.filetemplete.TemplatesDatabase;
 import tools.gnzlz.filetemplete.TemplatesModel;
+import tools.gnzlz.filetemplete.TemplatesScheme;
 import tools.gnzlz.template.TemplateManager;
 
 public class ConsoleBuildProject {
@@ -38,25 +40,56 @@ public class ConsoleBuildProject {
      * buildProject
      */
     public static void buildProject(String ... args) {
-        InitListCommand oldCommands = InitListCommand.create();
+        var oldCommands = InitListCommand.create();
 
-        ResultListCommand commands = Process.argsAndQuestions(args, commandsBuildProject, oldCommands);
+        var commands = Process.argsAndQuestions(args, commandsBuildProject, oldCommands);
 
-        String id = commands.string("project_id");
-        String name = id;
-        String hash = id;
+        var id = commands.string("project_id");
+        var name = id;
+        var hash = id;
+        var out = "";
+
+        if (!id.isBlank()) {
+            var data = id.split(":");
+            if (data.length == 2) {
+                name = data[0];
+                hash = data[1];
+            } else {
+                name = hash = data[0];
+            }
+        }
 
         var projects = gnzlz.console.database.sqlite.config.model.Project.selects()
-                .where("name", "=", name).or()
-                .where("hash", "=", hash).executeQuery();
+            .where("name", "=", name).or()
+            .where("hash", "=", hash).executeQuery();
 
         if (projects.size() == 1) {
             for (var project : projects) {
-                Project projectData = ProjectController.getProject(project.path());
+                TemplateManager manager = TemplateManager.create(project.path());
+                TemplatesDatabase templatesDatabase = TemplatesDatabase.create();
+                TemplatesScheme templatesScheme = TemplatesScheme.create();
+                TemplatesModel templatesModel = TemplatesModel.create();
+                var projectData = ProjectController.getProject(project.path());
                 if (projectData != null) {
                     projectData.templates().forEach(template -> {
-                        System.out.println(template.path());
+                        switch (template.type()) {
+                            case "catalog" :
+                                templatesDatabase.load(template.name(), template.path());
+                                break;
+                            case "scheme" :
+                                templatesScheme.load(template.name(), template.path());
+                                break;
+                            case "model" :
+                                templatesModel.load(template.name(), template.path());
+                                break;
+                            case "none" :
+                                //templatesModel.load(template.name(), JSON.path(project.path()) + template.path());
+                                break;
+                        }
                     });
+                    manager.add(templatesDatabase).add(templatesScheme).add(templatesModel);
+
+
                 }
             }
         }
