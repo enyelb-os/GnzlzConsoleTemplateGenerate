@@ -1,8 +1,9 @@
 package gnzlz.console.process.project;
 
+import gnzlz.console.database.sqlite.config.model.Project;
 import gnzlz.console.file.json.JSON;
+import gnzlz.console.process.database.controller.DatabaseController;
 import gnzlz.console.process.project.controller.ProjectController;
-import gnzlz.console.file.json.project.data.Project;
 import tools.gnzlz.command.init.InitListCommand;
 import tools.gnzlz.command.process.Process;
 import tools.gnzlz.command.result.ResultListCommand;
@@ -190,17 +191,18 @@ public class ConsoleProject {
 
 
     /**
-     * processCommandsCreateProjectJSon
+     * createAndUpdateProjectJson
      * @param path path
      * @param file file
+     * @param args args
      */
 
-    public static void processCommandsCreateProjectJSon(String path, String file, String ... args) {
-        Project oldProject = JSON.create(path + file, Project.class);
-        InitListCommand oldCommands = ProjectController.parseProjectToCommands(oldProject);
+    public static void createAndUpdateProjectJson(String path, String file, String db, String ... args) {
+        InitListCommand oldCommands = ProjectController.parseProjectToInitListCommand(path, file);
         ResultListCommand newCommands = Process.questions(commandsDataProject, oldCommands);
-        Project newProject = ProjectController.parseCommandsToProject(newCommands);
-        JSON.save(path + file, newProject);
+        if (ProjectController.createProject(path, file, newCommands) != null) {
+            Project project = DatabaseController.createProject(path, file, newCommands.string("project"), db);
+        }
     }
 
     /**
@@ -223,20 +225,32 @@ public class ConsoleProject {
         .value("project.gnzlz.test.json");
 
     /**
+     * PROJECT_DATABASE
+     */
+    public static CommandOptionString PROJECT_DATABASE = CommandOptionString
+            .create("project_database")
+            .required(false)
+            .message("Project type database")
+            .option("mysql", "postgresql", "sqlite");
+
+    /**
      * commandsCreateProject
      */
     private static final ListCommand commandsCreateProject = ListCommand
         .create()
-        .addCommand(PROJECT_PATH, PROJECT_NAME);
+        .addCommand(PROJECT_PATH, PROJECT_NAME, PROJECT_DATABASE);
 
 
     /**
-     * processCommandsCreateProjectJSon
+     * createAndUpdateProjectJson
      */
-    public static void processCommandsCreateProjectJSon(String ... args) {
+    public static void createAndUpdateProjectJson(boolean db, String ... args) {
         InitListCommand oldCommands = InitListCommand.create();
+        PROJECT_DATABASE.required(db);
         ResultListCommand commands = Process.questions(commandsCreateProject, oldCommands);
-
-        ConsoleProject.processCommandsCreateProjectJSon(commands.string("project_path"), commands.string("project_name"), args);
+        String name = commands.string("project_path");
+        String file = commands.string("project_name");
+        String database = db ? commands.string("project_database") : "none";
+        ConsoleProject.createAndUpdateProjectJson(name, file, database, args);
     }
 }

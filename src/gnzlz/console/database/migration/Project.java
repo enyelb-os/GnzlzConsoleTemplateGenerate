@@ -19,7 +19,8 @@ public class Project extends DBMigration {
     protected void initTable(PropertiesTable table) {
         table.primaryKey("id", INTEGER);
         table.column("name", VARCHAR, 100).notNull();
+        table.column("hash", VARCHAR, 10).notNull();
         table.column("path", VARCHAR, 200).notNull();
-        table.column("type", INTEGER).foreignKey(ProjectType.class).notNull();
+        table.column("type", VARCHAR, 10).notNull();
     }
 }

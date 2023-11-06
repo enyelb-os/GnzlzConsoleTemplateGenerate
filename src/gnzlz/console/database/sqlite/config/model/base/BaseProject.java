@@ -11,21 +11,20 @@ import tools.gnzlz.database.query.model.Select;
 import gnzlz.console.database.sqlite.config.model.DatabaseProject;
 import gnzlz.console.database.sqlite.config.model.Project;
 import gnzlz.console.database.sqlite.config.model.Database;
-import gnzlz.console.database.sqlite.config.model.ProjectType;
 
 public class BaseProject<Type extends DBModel<Type>> extends DBModel<Project> {
 
     public static final String TABLE = "project";
     public static final String ID = "id";
     public static final String NAME = "name";
+    public static final String HASH = "hash";
     public static final String PATH = "path";
     public static final String TYPE = "type";
 
     private static final DBTable DBTABLE = DBTable.create()
         .addConfiguration(ConfigSQLite.class)
         .addTable(TABLE).addPrimaryKey(ID)
-        .addColumns(ID ,NAME ,PATH ,TYPE)
-        .addHasOne(TYPE, ProjectType.class, ProjectType.ID)
+        .addColumns(ID ,NAME ,HASH ,PATH ,TYPE)
         .addHasMany(ID, DatabaseProject.class, DatabaseProject.PROJECT)
         .addBelongsToMany(ID, DatabaseProject.PROJECT, DatabaseProject.class, DatabaseProject.DATABASE, Database.class, Database.ID);
 
@@ -51,6 +50,15 @@ public class BaseProject<Type extends DBModel<Type>> extends DBModel<Project> {
         return (Type) this;
     }
 
+    public String hash() {
+        return get(HASH).stringValue();
+    }
+
+    public Type hash(String hash) {
+        set(HASH, hash);
+        return (Type) this;
+    }
+
     public String path() {
         return get(PATH).stringValue();
     }
@@ -60,11 +68,11 @@ public class BaseProject<Type extends DBModel<Type>> extends DBModel<Project> {
         return (Type) this;
     }
 
-    public int type() {
-        return get(TYPE).intValue();
+    public String type() {
+        return get(TYPE).stringValue();
     }
 
-    public Type type(int type) {
+    public Type type(String type) {
         set(TYPE, type);
         return (Type) this;
     }

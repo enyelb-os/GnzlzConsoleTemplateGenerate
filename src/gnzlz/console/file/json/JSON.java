@@ -13,6 +13,18 @@ import java.lang.reflect.Type;
 public class JSON {
 
     /**
+     * path
+     * @param path path
+     */
+    public static String path(String path) {
+        char last = path.charAt(path.length() - 1);
+        if (last != '\\' && last != '/') {
+            return path + (path.contains("\\") ? "\\" : "/");
+        }
+        return path;
+    }
+
+    /**
      * updateAndCreate
      * @param <T> t
      * @param path p
@@ -70,7 +82,7 @@ public class JSON {
             gson.toJson(json, fileWriter);
             fileWriter.close();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            return null;
         }
         return json;
     }

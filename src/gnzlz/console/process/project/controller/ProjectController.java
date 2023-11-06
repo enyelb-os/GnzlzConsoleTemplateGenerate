@@ -1,5 +1,6 @@
 package gnzlz.console.process.project.controller;
 
+import gnzlz.console.file.json.JSON;
 import gnzlz.console.process.project.ConsoleProject;
 import gnzlz.console.file.json.project.data.*;
 import tools.gnzlz.command.init.InitListCommand;
@@ -8,15 +9,15 @@ import tools.gnzlz.command.result.ResultListCommand;
 public class ProjectController {
 
     /**
-     * parseCommandsToProject
+     * createProject
+     * @param path p
+     * @param file f
      * @param command c
      */
-    public static Project parseCommandsToProject(ResultListCommand command) {
-
-        Project project = Project.create();
-
-        project.name(command.string("project")).version(command.string("version"));
-
+    public static Project createProject(String path, String file, ResultListCommand command) {
+        Project project = Project.create()
+            .name(command.string("project"))
+            .version(command.string("version"));
         for (ResultListCommand commandTemplate : command.array("templates")){
             project.templates(Template.create()
                 .name(commandTemplate.string("name"))
@@ -24,7 +25,6 @@ public class ProjectController {
                 .type(commandTemplate.string("type"))
             );
         }
-
         for (ResultListCommand commandCommand : command.array("commands")){
             Command commands = Command.create()
                 .name(commandCommand.string("name"))
@@ -35,10 +35,9 @@ public class ProjectController {
             }
             project.commands(commands);
         }
-
         parseGroupsToGroup(project, null, command);
 
-        return project;
+        return JSON.save(JSON.path(path) + file, project);
     }
 
     /**
@@ -67,10 +66,12 @@ public class ProjectController {
     }
 
     /**
-     * parseProjectToCommands
-     * @param project p
+     * parseProjectToInitListCommand
+     * @param path p
+     * @param file f
      */
-    public static InitListCommand parseProjectToCommands(Project project) {
+    public static InitListCommand parseProjectToInitListCommand(String path, String file) {
+        Project project = JSON.create(JSON.path(path) + file, Project.class);
         if (project == null) {
             return InitListCommand.create();
         }

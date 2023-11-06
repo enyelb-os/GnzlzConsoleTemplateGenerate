@@ -1,5 +1,6 @@
 package gnzlz.console.process;
 
+import gnzlz.console.process.database.ConsoleDatabase;
 import gnzlz.console.process.project.ConsoleProject;
 import tools.gnzlz.command.group.GroupCommand;
 import tools.gnzlz.command.group.ParentGroupCommand;
@@ -24,19 +25,19 @@ public class ConsoleMain {
         GroupCommand.create("project").addGroup(
             GroupCommand.create("db").addGroup(
                 GroupCommand.create("create").execute(command -> {
-                    ConsoleProject.processCommandsCreateProjectJSon();
+                    ConsoleProject.createAndUpdateProjectJson(true);
                 }), GROUP_EXIT
             ),
             GroupCommand.create().addGroup(
                 GroupCommand.create("create").execute(command -> {
-                    ConsoleProject.processCommandsCreateProjectJSon();
+                    ConsoleProject.createAndUpdateProjectJson(false);
                 }), GROUP_EXIT
             )
         ),
         GroupCommand.create("config").addGroup(
             GroupCommand.create("db").addGroup(
                 GroupCommand.create("create").execute(command -> {
-
+                    ConsoleDatabase.createDatabase();
                 }), GROUP_EXIT
             )
         ),

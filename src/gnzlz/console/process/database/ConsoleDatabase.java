@@ -1,33 +1,26 @@
 package gnzlz.console.process.database;
 
+import gnzlz.console.database.sqlite.config.model.Database;
+import gnzlz.console.file.json.JSON;
+import gnzlz.console.file.json.project.data.Project;
+import gnzlz.console.process.database.controller.DatabaseController;
+import gnzlz.console.process.project.controller.ProjectController;
 import tools.gnzlz.command.group.GroupCommand;
 import tools.gnzlz.command.group.ParentGroupCommand;
+import tools.gnzlz.command.init.InitListCommand;
+import tools.gnzlz.command.process.Process;
+import tools.gnzlz.command.result.ResultListCommand;
 import tools.gnzlz.filetemplete.Console;
 
 public class ConsoleDatabase {
 
     /**
-     * PARENT
+     * createDatabase
+     * @param args args
      */
-
-    private final static ParentGroupCommand PARENT = GroupCommand.parent().addGroup(
-        GroupCommand.create("create").addGroup(
-            GroupCommand.create("configuration").addGroup(
-                GroupCommand.create("database").use(Console.listCommandDB).execute(commands -> {
-
-                })
-            )
-        ),
-        GroupCommand.create("test").addGroup(
-            GroupCommand.create("add").addGroup(
-                GroupCommand.create("database").use(Console.listCommandDB).execute(commands -> {
-
-                })
-            )
-        )
-    );
-
-    public static void main(String[] args) {
-        GroupCommand.process(args, PARENT);
+    public static void createDatabase(String ... args) {
+        InitListCommand oldCommands = InitListCommand.create();
+        ResultListCommand newCommands = Process.questions(Console.listCommandDB, oldCommands);
+        Database database = DatabaseController.createDatabase(newCommands);
     }
 }
