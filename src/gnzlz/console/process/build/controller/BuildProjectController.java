@@ -79,34 +79,50 @@ public class BuildProjectController {
         for (Command commandData: commands) {
             switch (commandData.type()) {
                 case "option":
-                    String[] options = new String[commandData.options().size()];
-                    for (int i = 0; i < commandData.options().size(); i++) {
-                        options[i] = commandData.options().get(i).option();
-                    }
                     listCommand.addCommand(CommandOptionString.create(commandData.name())
+                        .message(commandData.message())
                         .required(commandData.isRequired())
-                        .option(options)
+                        .option(BuildProjectController.array(commandData.options()))
+                        .commands(BuildProjectController.array(commandData.args()))
                     );
                     break;
                 case "integer": case "int":
                     listCommand.addCommand(CommandInteger.create(commandData.name())
+                        .message(commandData.message())
                         .required(commandData.isRequired())
                         .value(Integer.valueOf(commandData.value().isBlank() ? "0" : commandData.value()))
+                        .commands(BuildProjectController.array(commandData.args()))
                     );
                     break;
                 case "bool": case "boolean":
                     listCommand.addCommand(CommandBoolean.create(commandData.name())
+                        .message(commandData.message())
                         .required(commandData.isRequired())
                         .value(commandData.value().equalsIgnoreCase("true") || commandData.value().equalsIgnoreCase("1"))
+                        .commands(BuildProjectController.array(commandData.args()))
                     );
                     break;
                 default:
                     listCommand.addCommand(CommandString.create(commandData.name())
+                        .message(commandData.message())
                         .required(commandData.isRequired())
                         .value(commandData.value())
+                        .commands(BuildProjectController.array(commandData.args()))
                     );
             }
         }
         return listCommand;
+    }
+
+    /**
+     * array
+     * @param list list
+     */
+    private static String[] array(ArrayList<String> list) {
+        String[] array = new String[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            array[i] = list.get(i);
+        }
+        return array;
     }
 }

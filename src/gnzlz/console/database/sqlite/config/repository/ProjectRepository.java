@@ -2,7 +2,6 @@ package gnzlz.console.database.sqlite.config.repository;
 
 import gnzlz.console.database.sqlite.config.model.Project;
 import gnzlz.console.file.json.JSON;
-import gnzlz.console.process.database.controller.DatabaseController;
 
 import java.util.ArrayList;
 
@@ -33,7 +32,7 @@ public class ProjectRepository {
      * @param id id
      */
     public static ArrayList<Project> findByHash(String id) {
-        var hash = DatabaseController.parseHash(id);
+        var hash = Repository.parseHash(id);
         return Project.selects()
             .where("name", "=", hash.key()).or()
             .where("hash", "=", hash.hash()).executeQuery();

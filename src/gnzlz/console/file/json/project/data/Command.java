@@ -21,9 +21,14 @@ public class Command {
     private String type;
 
     /**
+     * args
+     */
+    private final ArrayList<String> args;
+
+    /**
      * options
      */
-    private final ArrayList<Option> options;
+    private final ArrayList<String> options;
 
     /**
      * value
@@ -31,15 +36,16 @@ public class Command {
     private String value;
 
     /**
-     * question
+     * message
      */
-    private String question;
+    private String message;
 
     /**
      * Command
      */
     private Command(){
-        options = new ArrayList<Option>();
+        options = new ArrayList<String>();
+        args = new ArrayList<String>();
     }
 
     /**
@@ -100,9 +106,28 @@ public class Command {
     }
 
     /**
+     * args
+     */
+    public ArrayList<String> args() {
+        return args;
+    }
+
+    /**
+     * options
+     * @param args o
+     */
+    public Command args(String ... args) {
+        if(args != null) {
+            this.args.addAll(Arrays.asList(args));
+        }
+        return this;
+    }
+
+
+    /**
      * options
      */
-    public ArrayList<Option> options() {
+    public ArrayList<String> options() {
         return options;
     }
 
@@ -110,7 +135,7 @@ public class Command {
      * options
      * @param options o
      */
-    public Command options(Option ... options) {
+    public Command options(String ... options) {
         if(options != null) {
             this.options.addAll(Arrays.asList(options));
         }
@@ -134,18 +159,18 @@ public class Command {
     }
 
     /**
-     * question
+     * message
      */
-    public String question() {
-        return question;
+    public String message() {
+        return message;
     }
 
     /**
-     * question
-     * @param question q
+     * message
+     * @param message q
      */
-    public Command question(String question) {
-        this.question = question;
+    public Command message(String message) {
+        this.message = message;
         return this;
     }
 }

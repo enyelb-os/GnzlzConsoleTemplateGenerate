@@ -4,9 +4,11 @@ module GnzlzConsoleTemplateGenerate {
     opens gnzlz.console.database.sqlite.config.model;
     opens gnzlz.console.database.migration;
     opens gnzlz.console.file.json.project.data;
+    opens gnzlz.console;
 
     requires com.google.gson;
     requires sqlite.jdbc;
+    requires mysql.connector.java;
 
     requires tools.gnzlz.database;
     requires tools.gnzlz.command;

@@ -1,6 +1,5 @@
 package gnzlz.console.process.project;
 
-import gnzlz.console.database.sqlite.config.model.Project;
 import gnzlz.console.database.sqlite.config.repository.ProjectRepository;
 import gnzlz.console.process.project.controller.ProjectController;
 import tools.gnzlz.command.init.InitListCommand;
@@ -74,6 +73,14 @@ public class ConsoleProject {
         .message("Nombre del comando");
 
     /**
+     * COMMAND_MESSAGE
+     */
+    public static CommandString COMMAND_MESSAGE = CommandString
+            .create("message")
+            .required()
+            .message("Message");
+
+    /**
      * COMMAND_REQUIRED
      */
     public static CommandBoolean COMMAND_REQUIRED = CommandBoolean
@@ -117,13 +124,31 @@ public class ConsoleProject {
         .array(COMMAND_OPTION);
 
     /**
+     * COMMAND_ARGS_NAME
+     */
+    public static CommandOptionString COMMAND_ARGS_NAME = CommandOptionString
+        .create("name")
+        .required()
+        .message("Arg")
+        .option(COMMAND_NAME);
+
+    /**
+     * COMMAND_ARGS
+     */
+    public static CommandArray COMMAND_ARGS = CommandArray
+        .create("args")
+        .required()
+        .message("Args")
+        .array(COMMAND_ARGS_NAME);
+
+    /**
      * COMMANDS
      */
     public static CommandArray COMMANDS = CommandArray
         .create("commands")
         .required()
         .message("Lista de comandos")
-        .array(COMMAND_NAME, COMMAND_REQUIRED, COMMAND_TYPE, COMMAND_OPTIONS, COMMAND_DEFAULT);
+        .array(COMMAND_NAME, COMMAND_MESSAGE, COMMAND_REQUIRED, COMMAND_TYPE, COMMAND_ARGS, COMMAND_OPTIONS, COMMAND_DEFAULT);
 
     /**
      * GROUP_NAME
@@ -188,40 +213,24 @@ public class ConsoleProject {
         .create()
         .addCommand(PROJECT, VERSION, TEMPLATES, COMMANDS, GROUP_GROUP);
 
-
-    /**
-     * createAndUpdateProjectJson
-     * @param path path
-     * @param file file
-     * @param args args
-     */
-
-    public static void createAndUpdateProjectJson(String path, String file, String db, String ... args) {
-        InitListCommand oldCommands = ProjectController.parseProjectToInitListCommand(path, file);
-        ResultListCommand newCommands = Process.argsAndQuestions(args, commandsDataProject, oldCommands);
-        if (ProjectController.createProjectFileJson(path, file, newCommands) != null) {
-            ProjectRepository.create(path, file, newCommands.string("project"), db);
-        }
-    }
-
     /**
      * PROJECT_PATH
      */
     public final static CommandString PROJECT_PATH = CommandString
-        .create("project_path")
-        .commands("--projectpath", "-propath")
-        .required()
-        .message("Project path")
-        .value(System.getProperty("user.dir"));
+            .create("project_path")
+            .commands("--projectpath", "-propath")
+            .required()
+            .message("Project path")
+            .value(System.getProperty("user.dir"));
 
     /**
      * PROJECT_NAME
      */
     public static CommandString PROJECT_NAME = CommandString
-        .create("project_name")
-        .required()
-        .message("Project file name")
-        .value("project.gnzlz.test.json");
+            .create("project_name")
+            .required()
+            .message("Project file name")
+            .value("project.gnzlz.test.json");
 
     /**
      * PROJECT_DATABASE
@@ -230,7 +239,7 @@ public class ConsoleProject {
             .create("project_database")
             .required(false)
             .message("Project type database")
-            .option("mysql", "postgresql", "sqlite");
+            .option("db", "dbmodel");
 
     /**
      * commandsCreateProject
@@ -239,17 +248,23 @@ public class ConsoleProject {
         .create()
         .addCommand(PROJECT_PATH, PROJECT_NAME, PROJECT_DATABASE);
 
-
     /**
      * createAndUpdateProjectJson
      */
     public static void createAndUpdateProjectJson(boolean db, String ... args) {
         InitListCommand oldCommands = InitListCommand.create();
-        PROJECT_DATABASE.required(db);
+
+        PROJECT_DATABASE.required(db).valueOption("none");
+
         ResultListCommand commands = Process.argsAndQuestions(args, commandsCreateProject, oldCommands);
-        String name = commands.string("project_path");
+        String path = commands.string("project_path");
         String file = commands.string("project_name");
-        String database = db ? commands.string("project_database") : "none";
-        ConsoleProject.createAndUpdateProjectJson(name, file, database, args);
+        String database = commands.string("project_database");
+
+        oldCommands = ProjectController.parseProjectToInitListCommand(path, file);
+        ResultListCommand newCommands = Process.argsAndQuestions(args, commandsDataProject, oldCommands);
+        if (ProjectController.createProjectFileJson(path, file, newCommands) != null) {
+            ProjectRepository.create(path, file, newCommands.string("project"), database);
+        }
     }
 }

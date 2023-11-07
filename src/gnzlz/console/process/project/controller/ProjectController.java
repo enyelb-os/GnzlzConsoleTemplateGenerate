@@ -28,10 +28,14 @@ public class ProjectController {
         for (ResultListCommand commandCommand : command.array("commands")){
             Command commands = Command.create()
                 .name(commandCommand.string("name"))
+                .message(commandCommand.string("message"))
                 .required(commandCommand.bool("required"))
                 .type(commandCommand.string("type"));
             for (ResultListCommand commandOptions: commandCommand.array("options")) {
-                commands.options(Option.create().option(commandOptions.string("option")));
+                commands.options(commandOptions.string("option"));
+            }
+            for (ResultListCommand commandArgs: commandCommand.array("args")) {
+                commands.args(commandArgs.string("name"));
             }
             project.commands(commands);
         }
@@ -84,11 +88,15 @@ public class ProjectController {
                 .addCommand(ConsoleProject.TEMPLATE_TYPE, template.type())
             ).addCommand(ConsoleProject.COMMANDS, project.commands(), (command) -> InitListCommand.create()
                 .addCommand(ConsoleProject.COMMAND_NAME, command.name())
+                .addCommand(ConsoleProject.COMMAND_NAME, command.message())
                 .addCommand(ConsoleProject.COMMAND_REQUIRED, command.isRequired())
                 .addCommand(ConsoleProject.COMMAND_TYPE, command.type())
                 .addCommand(ConsoleProject.COMMAND_DEFAULT, command.value())
                 .addCommand(ConsoleProject.COMMAND_OPTIONS, command.options(), (option) -> InitListCommand.create()
-                    .addCommand(ConsoleProject.COMMAND_OPTION, option.option())
+                    .addCommand(ConsoleProject.COMMAND_OPTION, option)
+                )
+                .addCommand(ConsoleProject.COMMAND_ARGS, command.args(), (arg) -> InitListCommand.create()
+                    .addCommand(ConsoleProject.COMMAND_ARGS_NAME, arg)
                 )
             ).addCommand(ConsoleProject.GROUP_GROUP, project.groups(), ProjectController::parseGroupsToGroup);
     }

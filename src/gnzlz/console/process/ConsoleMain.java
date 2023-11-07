@@ -2,6 +2,7 @@ package gnzlz.console.process;
 
 import gnzlz.console.process.build.ConsoleBuildProject;
 import gnzlz.console.process.database.ConsoleDatabase;
+import gnzlz.console.process.output.ConsoleOutput;
 import gnzlz.console.process.project.ConsoleProject;
 import tools.gnzlz.command.group.GroupCommand;
 import tools.gnzlz.command.group.ParentGroupCommand;
@@ -40,6 +41,11 @@ public class ConsoleMain {
             GroupCommand.create("db").addGroup(
                 GroupCommand.create("create").execute((args, command) -> {
                     ConsoleDatabase.createDatabase(args);
+                }), GROUP_EXIT
+            ),
+            GroupCommand.create("out").addGroup(
+                GroupCommand.create("create").execute((args, command) -> {
+                    ConsoleOutput.createOutput(args);
                 }), GROUP_EXIT
             )
         ),
