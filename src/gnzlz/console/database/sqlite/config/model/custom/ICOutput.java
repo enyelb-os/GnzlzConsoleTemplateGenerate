@@ -1,10 +1,10 @@
 
 package  gnzlz.console.database.sqlite.config.model.custom;
 
-import  gnzlz.console.database.sqlite.config.model.Database;
+import  gnzlz.console.database.sqlite.config.model.Output;
 import gnzlz.console.database.sqlite.config.model.Project;
 
-public interface ICDatabase {
+public interface ICOutput {
 
     /*******************************************
 	 * @Example
@@ -14,10 +14,10 @@ public interface ICDatabase {
 	 * }
 	 *******************************************/
 
-    public Database modelDB();
+    public Output modelDB();
 
-	public default Database defaultHash() {
-		Database model = modelDB();
+	public default Output defaultHash() {
+		Output model = modelDB();
 		model.hash(String.valueOf(model.hashCode()));
 		return model;
 	}

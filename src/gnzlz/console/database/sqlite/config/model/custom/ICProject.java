@@ -15,4 +15,10 @@ public interface ICProject {
 
     public Project modelDB();
 
+	public default Project defaultHash() {
+		Project model = modelDB();
+		model.hash(String.valueOf(model.hashCode()));
+		return model;
+	}
+
 }

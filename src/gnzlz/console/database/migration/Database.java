@@ -25,5 +25,6 @@ public class Database extends DBMigration {
         table.column("user",VARCHAR, 50).notNull();
         table.column("password",VARCHAR, 50).notNull();
         table.column("name",VARCHAR, 50).notNull();
+        table.column("hash", VARCHAR, 10).notNull();
     }
 }

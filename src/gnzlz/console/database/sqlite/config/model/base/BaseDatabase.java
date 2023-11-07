@@ -8,9 +8,7 @@ import tools.gnzlz.database.model.DBTable;
 import tools.gnzlz.database.model.DBModel;
 import tools.gnzlz.database.query.model.Select;
 
-import gnzlz.console.database.sqlite.config.model.DatabaseProject;
 import gnzlz.console.database.sqlite.config.model.Database;
-import gnzlz.console.database.sqlite.config.model.Project;
 
 public class BaseDatabase<Type extends DBModel<Type>> extends DBModel<Database> {
 
@@ -23,13 +21,12 @@ public class BaseDatabase<Type extends DBModel<Type>> extends DBModel<Database> 
     public static final String USER = "user";
     public static final String PASSWORD = "password";
     public static final String NAME = "name";
+    public static final String HASH = "hash";
 
     private static final DBTable DBTABLE = DBTable.create()
         .addConfiguration(ConfigSQLite.class)
         .addTable(TABLE).addPrimaryKey(ID)
-        .addColumns(ID ,TYPE ,PATH ,HOST ,PORT ,USER ,PASSWORD ,NAME)
-        .addHasMany(ID, DatabaseProject.class, DatabaseProject.DATABASE)
-        .addBelongsToMany(ID, DatabaseProject.DATABASE, DatabaseProject.class, DatabaseProject.PROJECT, Project.class, Project.ID);
+        .addColumns(ID ,TYPE ,PATH ,HOST ,PORT ,USER ,PASSWORD ,NAME ,HASH);
 
     public BaseDatabase() {
         super(DBTABLE);
@@ -104,6 +101,15 @@ public class BaseDatabase<Type extends DBModel<Type>> extends DBModel<Database> 
 
     public Type name(String name) {
         set(NAME, name);
+        return (Type) this;
+    }
+
+    public String hash() {
+        return get(HASH).stringValue();
+    }
+
+    public Type hash(String hash) {
+        set(HASH, hash);
         return (Type) this;
     }
 

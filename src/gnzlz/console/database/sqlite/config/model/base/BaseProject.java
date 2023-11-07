@@ -8,9 +8,7 @@ import tools.gnzlz.database.model.DBTable;
 import tools.gnzlz.database.model.DBModel;
 import tools.gnzlz.database.query.model.Select;
 
-import gnzlz.console.database.sqlite.config.model.DatabaseProject;
 import gnzlz.console.database.sqlite.config.model.Project;
-import gnzlz.console.database.sqlite.config.model.Database;
 
 public class BaseProject<Type extends DBModel<Type>> extends DBModel<Project> {
 
@@ -19,14 +17,13 @@ public class BaseProject<Type extends DBModel<Type>> extends DBModel<Project> {
     public static final String NAME = "name";
     public static final String HASH = "hash";
     public static final String PATH = "path";
+    public static final String FILE = "file";
     public static final String TYPE = "type";
 
     private static final DBTable DBTABLE = DBTable.create()
         .addConfiguration(ConfigSQLite.class)
         .addTable(TABLE).addPrimaryKey(ID)
-        .addColumns(ID ,NAME ,HASH ,PATH ,TYPE)
-        .addHasMany(ID, DatabaseProject.class, DatabaseProject.PROJECT)
-        .addBelongsToMany(ID, DatabaseProject.PROJECT, DatabaseProject.class, DatabaseProject.DATABASE, Database.class, Database.ID);
+        .addColumns(ID ,NAME ,HASH ,PATH ,FILE ,TYPE);
 
     public BaseProject() {
         super(DBTABLE);
@@ -65,6 +62,15 @@ public class BaseProject<Type extends DBModel<Type>> extends DBModel<Project> {
 
     public Type path(String path) {
         set(PATH, path);
+        return (Type) this;
+    }
+
+    public String file() {
+        return get(FILE).stringValue();
+    }
+
+    public Type file(String file) {
+        set(FILE, file);
         return (Type) this;
     }
 

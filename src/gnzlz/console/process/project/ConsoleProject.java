@@ -1,8 +1,7 @@
 package gnzlz.console.process.project;
 
 import gnzlz.console.database.sqlite.config.model.Project;
-import gnzlz.console.file.json.JSON;
-import gnzlz.console.process.database.controller.DatabaseController;
+import gnzlz.console.database.sqlite.config.repository.ProjectRepository;
 import gnzlz.console.process.project.controller.ProjectController;
 import tools.gnzlz.command.init.InitListCommand;
 import tools.gnzlz.command.process.Process;
@@ -200,8 +199,8 @@ public class ConsoleProject {
     public static void createAndUpdateProjectJson(String path, String file, String db, String ... args) {
         InitListCommand oldCommands = ProjectController.parseProjectToInitListCommand(path, file);
         ResultListCommand newCommands = Process.argsAndQuestions(args, commandsDataProject, oldCommands);
-        if (ProjectController.createProject(path, file, newCommands) != null) {
-            Project project = DatabaseController.createProject(path, file, newCommands.string("project"), db);
+        if (ProjectController.createProjectFileJson(path, file, newCommands) != null) {
+            ProjectRepository.create(path, file, newCommands.string("project"), db);
         }
     }
 

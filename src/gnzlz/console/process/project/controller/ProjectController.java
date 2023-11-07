@@ -9,12 +9,12 @@ import tools.gnzlz.command.result.ResultListCommand;
 public class ProjectController {
 
     /**
-     * createProject
+     * createProjectFileJson
      * @param path p
      * @param file f
      * @param command c
      */
-    public static Project createProject(String path, String file, ResultListCommand command) {
+    public static Project createProjectFileJson(String path, String file, ResultListCommand command) {
         Project project = Project.create()
             .name(command.string("project"))
             .version(command.string("version"));
@@ -108,10 +108,10 @@ public class ProjectController {
     }
 
     /**
-     * getProject
+     * getProjectFileJson
      * @param path p
      */
-    public static Project getProject(String path) {
+    public static Project getProjectFileJson(String path) {
         return JSON.create(path, Project.class);
     }
 }

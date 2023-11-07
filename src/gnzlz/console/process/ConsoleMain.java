@@ -5,6 +5,7 @@ import gnzlz.console.process.database.ConsoleDatabase;
 import gnzlz.console.process.project.ConsoleProject;
 import tools.gnzlz.command.group.GroupCommand;
 import tools.gnzlz.command.group.ParentGroupCommand;
+
 public class ConsoleMain {
 
     /**
@@ -57,7 +58,7 @@ public class ConsoleMain {
     public static void main(String[] args) {
         do {
             GroupCommand.process(args, PARENT);
-        } while (!exit);
+        } while (!exit && (args == null || args.length == 0));
     }
 
 }

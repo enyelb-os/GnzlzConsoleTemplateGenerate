@@ -1,8 +1,9 @@
 
 package gnzlz.console.database.sqlite.config;
 
+import gnzlz.console.database.migration.Args;
 import gnzlz.console.database.migration.Database;
-import gnzlz.console.database.migration.DatabaseProject;
+import gnzlz.console.database.migration.Output;
 import gnzlz.console.database.migration.Project;
 import org.sqlite.JDBC;
 import tools.gnzlz.database.model.DBConfiguration;
@@ -26,7 +27,8 @@ public class ConfigSQLite extends DBConfiguration {
     protected void initMigration(PropertiesMigration migration) {
         migration.add(Project.class);
         migration.add(Database.class);
-        migration.add(DatabaseProject.class);
+        migration.add(Args.class);
+        migration.add(Output.class);
     }
 
     @Override
