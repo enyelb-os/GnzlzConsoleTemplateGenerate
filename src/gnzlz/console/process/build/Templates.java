@@ -1,7 +1,7 @@
 package gnzlz.console.process.build;
 
 import gnzlz.console.ModelBase;
-import tools.gnzlz.filetemplete.TemplatesDatabase;
+import tools.gnzlz.filetemplete.TemplatesCatalog;
 import tools.gnzlz.filetemplete.TemplatesModel;
 import tools.gnzlz.filetemplete.TemplatesScheme;
 import tools.gnzlz.template.TemplateManager;
@@ -16,7 +16,7 @@ public class Templates {
     /**
      * templateDatabase
      */
-    private final TemplatesDatabase database;
+    private final TemplatesCatalog database;
 
 
     /**
@@ -33,10 +33,9 @@ public class Templates {
      * Templates
      */
     protected Templates(String path, String out, boolean dbmodel){
-        TemplatesDatabase.isObjectsDBModel = dbmodel;
 
         manager = TemplateManager.create(path, out);
-        database = TemplatesDatabase.create();
+        database = TemplatesCatalog.create();
         scheme = TemplatesScheme.create();
         model = TemplatesModel.create().object("model", ModelBase.class);
 

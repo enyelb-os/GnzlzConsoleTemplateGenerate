@@ -56,11 +56,12 @@ public class ConsoleBuildProject {
                 if (projectData != null) {
                     projectData.templates().forEach(template -> {
                         templates.load(template.type(), template.name(), template.path());
-
                     });
                     GroupCommand.process(args,
                         BuildProjectController.createGroupCommand(projectData, project.type(), templates.manager())
                     );
+                } else {
+                    System.out.println("file not fount");
                 }
             }
         }
