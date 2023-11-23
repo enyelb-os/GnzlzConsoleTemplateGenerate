@@ -14,5 +14,6 @@
     <orderEntry type="library" exported="" name="mysql-connector-java-8.0.9-rc" level="project" />
     <orderEntry type="library" exported="" name="slf4j-api-2.0.9" level="project" />
     <orderEntry type="library" exported="" name="sqlite-jdbc-3.44.0.0" level="project" />
+    <orderEntry type="library" exported="" name="slf4j-simple-2.0.9" level="project" />
   </component>
 </module>
