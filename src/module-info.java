@@ -7,7 +7,7 @@ module GnzlzConsoleTemplateGenerate {
     opens gnzlz.console;
 
     requires com.google.gson;
-    requires sqlite.jdbc;
+    requires org.xerial.sqlitejdbc;
     requires mysql.connector.java;
 
     requires tools.gnzlz.database;

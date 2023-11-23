@@ -1,12 +1,11 @@
 
 package gnzlz.console.database.sqlite.config.model.base;
 
-import java.util.ArrayList;
 import gnzlz.console.database.sqlite.config.ConfigSQLite;
-
-import tools.gnzlz.database.model.DBTable;
 import tools.gnzlz.database.model.DBModel;
+import tools.gnzlz.database.model.DBTable;
 import tools.gnzlz.database.query.model.Select;
+import java.util.ArrayList;
 
 import gnzlz.console.database.sqlite.config.model.Project;
 

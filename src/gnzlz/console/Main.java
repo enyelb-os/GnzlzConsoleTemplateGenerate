@@ -6,7 +6,12 @@ import gnzlz.console.database.sqlite.config.ConfigSQLite;
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("Test "+ ConfigSQLite.connection.query("Select 1+1").execute());
+        System.out.println("Test "+ ConfigSQLite.connection.query("SELECT null AS TABLE_CAT").executeSingle());
+
+        System.out.println(ConfigSQLite.connection.catalogs());
+        System.out.println(ConfigSQLite.connection.schemes(""));
+        System.out.println(ConfigSQLite.connection.tables("abcasd",""));
+        System.out.println(ConfigSQLite.connection.columns("","", "project"));
 
         //JSON.file("project.gnzlz.json");
 
