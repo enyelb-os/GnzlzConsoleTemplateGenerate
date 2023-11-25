@@ -2,6 +2,7 @@ package gnzlz.console.process.build.controller;
 
 
 import gnzlz.console.file.json.project.data.Command;
+import gnzlz.console.file.json.project.data.FunctionCast;
 import gnzlz.console.file.json.project.data.Group;
 import gnzlz.console.file.json.project.data.Project;
 import tools.gnzlz.command.command.object.ListCommand;
@@ -13,6 +14,7 @@ import tools.gnzlz.command.group.GroupCommand;
 import tools.gnzlz.command.group.ParentGroupCommand;
 import tools.gnzlz.filetemplete.Console;
 import tools.gnzlz.template.TemplateManager;
+import tools.gnzlz.template.instruction.reflection.functional.FunctionObjectCustom;
 
 import java.util.ArrayList;
 
@@ -124,5 +126,23 @@ public class BuildProjectController {
             array[i] = list.get(i);
         }
         return array;
+    }
+
+    /**
+     * createFunctionObjectCustom
+     * @param functionCast functionCast
+     */
+    public static FunctionObjectCustom createFunctionObjectCustom(FunctionCast functionCast) {
+        return object -> {
+            boolean type = functionCast.type() != null && functionCast.type().equalsIgnoreCase("boolean");
+            for (var cast: functionCast.cast()) {
+                for (String key: cast.key().split("[|]")) {
+                    if (object != null && object.toString().equals(key)) {
+                        return type ? true : cast.value();
+                    }
+                }
+            }
+            return type ? false : functionCast.value();
+        };
     }
 }

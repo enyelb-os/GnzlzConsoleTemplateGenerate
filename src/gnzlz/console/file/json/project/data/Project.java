@@ -31,12 +31,18 @@ public class Project {
     private final ArrayList<Group> groups;
 
     /**
+     * functions_cast
+     */
+    private final ArrayList<FunctionCast> functions_cast;
+
+    /**
      * Project
      */
     private Project(){
-        templates = new ArrayList<Template>();
-        commands = new ArrayList<Command>();
-        groups = new ArrayList<Group>();
+        templates = new ArrayList<>();
+        commands = new ArrayList<>();
+        groups = new ArrayList<>();
+        functions_cast = new ArrayList<>();
     }
 
     /**
@@ -128,6 +134,24 @@ public class Project {
     public Project groups(Group ... groups) {
         if(groups != null){
             this.groups.addAll(Arrays.asList(groups));
+        }
+        return this;
+    }
+
+    /**
+     * functionsCast
+     */
+    public ArrayList<FunctionCast> functionsCast() {
+        return functions_cast;
+    }
+
+    /**
+     * functionsCast
+     * @param functions_cast f
+     */
+    public Project functionsCast(FunctionCast ... functions_cast) {
+        if(functions_cast != null){
+            this.functions_cast.addAll(Arrays.asList(functions_cast));
         }
         return this;
     }

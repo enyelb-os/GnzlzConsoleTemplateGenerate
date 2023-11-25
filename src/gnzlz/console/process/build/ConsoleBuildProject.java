@@ -51,11 +51,14 @@ public class ConsoleBuildProject {
 
         if (projects.size() == 1) {
             for (var project : projects) {
-                Templates templates = Templates.create(project.path(), out, project.type().equals("dbmodel"));
+                Templates templates = Templates.create(project.path(), out);
                 var projectData = ProjectController.getProjectFileJson(project.path() + project.file());
                 if (projectData != null) {
                     projectData.templates().forEach(template -> {
                         templates.load(template.type(), template.name(), template.path());
+                    });
+                    projectData.functionsCast().forEach(functionCast -> {
+                        templates.manager().object(functionCast.name(), BuildProjectController.createFunctionObjectCustom(functionCast));
                     });
                     GroupCommand.process(args,
                         BuildProjectController.createGroupCommand(projectData, project.type(), templates.manager())

@@ -1,7 +1,10 @@
 package gnzlz.console;
 
+import gnzlz.console.database.sqlite.config.repository.ProjectRepository;
+import gnzlz.console.process.build.Templates;
 import gnzlz.console.process.database.ConsoleDatabase;
 import gnzlz.console.database.sqlite.config.ConfigSQLite;
+import gnzlz.console.process.project.controller.ProjectController;
 
 public class Main {
 
@@ -12,6 +15,19 @@ public class Main {
         System.out.println(ConfigSQLite.connection.schemes(""));
         System.out.println(ConfigSQLite.connection.tables("abcasd",""));
         System.out.println(ConfigSQLite.connection.columns("","", "project"));
+
+        var projects = ProjectRepository.findByHash("dbmodel");
+        for (var project : projects) {
+            var projectData = ProjectController.getProjectFileJson(project.path() + project.file());
+            for (var functionsCast: projectData.functionsCast()) {
+                System.out.println(functionsCast.name());
+                System.out.println("\tdefault:" + functionsCast.value());
+                for (var cast: functionsCast.cast()) {
+                    System.out.println("\t" + cast.key() + ":" + cast.value());
+                }
+            }
+            //System.out.println(projectData.functionsCast().get(0).cast().get(0).value());
+        }
 
         //JSON.file("project.gnzlz.json");
 

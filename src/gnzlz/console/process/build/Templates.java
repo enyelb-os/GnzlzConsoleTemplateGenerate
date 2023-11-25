@@ -32,7 +32,7 @@ public class Templates {
     /**
      * Templates
      */
-    protected Templates(String path, String out, boolean dbmodel){
+    protected Templates(String path, String out){
 
         manager = TemplateManager.create(path, out);
         database = TemplatesCatalog.create();
@@ -47,8 +47,8 @@ public class Templates {
      * @param path p
      * @param out o
      */
-    public static Templates create(String path, String out, boolean dbmodel){
-        return new Templates(path, out, dbmodel);
+    public static Templates create(String path, String out){
+        return new Templates(path, out);
     }
 
     /**
@@ -57,7 +57,7 @@ public class Templates {
      * @param name name
      * @param path path
      */
-    public Templates load(String type, String name, String path) {
+    public void load(String type, String name, String path) {
         switch (type) {
             case "catalog" : case "database" :
                 database.load(name, path);
@@ -72,7 +72,6 @@ public class Templates {
                 //templatesModel.load(template.name(), JSON.path(project.path()) + template.path());
                 break;
         }
-        return this;
     }
 
     /**
