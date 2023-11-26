@@ -142,7 +142,11 @@ public class BuildProjectController {
                     }
                 }
             }
-            return type ? false : functionCast.value();
+            if (functionCast.value().equalsIgnoreCase("@")) {
+                return object;
+            } else {
+                return type ? false : functionCast.value();
+            }
         };
     }
 }

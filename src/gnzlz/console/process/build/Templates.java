@@ -1,6 +1,5 @@
 package gnzlz.console.process.build;
 
-import gnzlz.console.ModelBase;
 import tools.gnzlz.filetemplete.TemplatesCatalog;
 import tools.gnzlz.filetemplete.TemplatesModel;
 import tools.gnzlz.filetemplete.TemplatesScheme;
@@ -37,7 +36,7 @@ public class Templates {
         manager = TemplateManager.create(path, out);
         database = TemplatesCatalog.create();
         scheme = TemplatesScheme.create();
-        model = TemplatesModel.create().object("model", ModelBase.class);
+        model = TemplatesModel.create();
 
         manager.add(database).add(scheme).add(model);
     }
