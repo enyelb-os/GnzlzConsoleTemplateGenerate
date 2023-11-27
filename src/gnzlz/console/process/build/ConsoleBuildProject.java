@@ -10,6 +10,8 @@ import tools.gnzlz.command.group.GroupCommand;
 import tools.gnzlz.command.init.InitListCommand;
 import tools.gnzlz.command.process.Process;
 
+import java.util.ArrayList;
+
 public class ConsoleBuildProject {
 
     /**
@@ -42,7 +44,7 @@ public class ConsoleBuildProject {
     /**
      * buildProject
      */
-    public static void buildProject(String ... args) {
+    public static void buildProject(ArrayList<String> args) {
         var oldCommands = InitListCommand.create();
         var commands = Process.argsAndQuestions(args, commandsBuildProject, oldCommands);
 

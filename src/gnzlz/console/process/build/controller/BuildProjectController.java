@@ -1,6 +1,5 @@
 package gnzlz.console.process.build.controller;
 
-
 import gnzlz.console.file.json.project.data.Command;
 import gnzlz.console.file.json.project.data.FunctionCast;
 import gnzlz.console.file.json.project.data.Group;
@@ -13,6 +12,7 @@ import tools.gnzlz.command.command.type.CommandString;
 import tools.gnzlz.command.group.GroupCommand;
 import tools.gnzlz.command.group.ParentGroupCommand;
 import tools.gnzlz.filetemplete.Console;
+import tools.gnzlz.filetemplete.properties.Properties;
 import tools.gnzlz.template.TemplateManager;
 import tools.gnzlz.template.instruction.reflection.functional.FunctionObjectCustom;
 
@@ -54,7 +54,10 @@ public class BuildProjectController {
         }
         if (group.groups().isEmpty()) {
             groupCommand.execute((args, commands) -> {
-                Console.process(commands, manager);
+                args.forEach(System.out::println);
+                Properties properties = Properties.create();
+                group.templates().forEach(template -> properties.add("templates", template));
+                Console.process(commands, manager, properties);
 
             });
         }

@@ -7,6 +7,8 @@ import tools.gnzlz.command.init.InitListCommand;
 import tools.gnzlz.command.process.Process;
 import tools.gnzlz.command.result.ResultListCommand;
 
+import java.util.ArrayList;
+
 public class ConsoleOutput {
 
     /**
@@ -39,7 +41,7 @@ public class ConsoleOutput {
      * createOutput
      * @param args args
      */
-    public static void createOutput(String ... args) {
+    public static void createOutput(ArrayList<String> args) {
         InitListCommand oldCommands = InitListCommand.create();
         ResultListCommand commands = Process.argsAndQuestions(args, commandsCreateOutput, oldCommands);
         OutputRepository.create(

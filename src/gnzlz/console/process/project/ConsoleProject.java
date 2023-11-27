@@ -11,6 +11,8 @@ import tools.gnzlz.command.command.type.CommandOptionString;
 import tools.gnzlz.command.command.type.CommandString;
 import tools.gnzlz.command.command.object.ListCommand;
 
+import java.util.ArrayList;
+
 public class ConsoleProject {
 
     /**
@@ -251,7 +253,7 @@ public class ConsoleProject {
     /**
      * createAndUpdateProjectJson
      */
-    public static void createAndUpdateProjectJson(boolean db, String ... args) {
+    public static void createAndUpdateProjectJson(boolean db, ArrayList<String> args) {
         InitListCommand oldCommands = InitListCommand.create();
 
         PROJECT_DATABASE.required(db).valueOption("none");

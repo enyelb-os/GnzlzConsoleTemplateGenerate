@@ -6,13 +6,15 @@ import tools.gnzlz.command.process.Process;
 import tools.gnzlz.command.result.ResultListCommand;
 import tools.gnzlz.filetemplete.Console;
 
+import java.util.ArrayList;
+
 public class ConsoleDatabase {
 
     /**
      * createDatabase
      * @param args args
      */
-    public static void createDatabase(String ... args) {
+    public static void createDatabase(ArrayList<String> args) {
         InitListCommand oldCommands = InitListCommand.create();
         ResultListCommand command = Process.argsAndQuestions(args, Console.listCommandDB, oldCommands);
         DatabaseRepository.create(
