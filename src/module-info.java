@@ -8,7 +8,7 @@ module GnzlzConsoleTemplateGenerate {
 
     requires com.google.gson;
     requires org.xerial.sqlitejdbc;
-    requires mysql.connector.java;
+    requires mysql.connector.j;
 
     requires tools.gnzlz.database;
     requires tools.gnzlz.command;
