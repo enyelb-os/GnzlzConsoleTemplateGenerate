@@ -5,13 +5,14 @@ import gnzlz.console.process.build.Templates;
 import gnzlz.console.process.database.ConsoleDatabase;
 import gnzlz.console.database.sqlite.config.ConfigSQLite;
 import gnzlz.console.process.project.controller.ProjectController;
+import tools.gnzlz.database.model.DBConfiguration;
 
 public class Main {
 
     public static void main(String[] args) {
         System.out.println("Test "+ ConfigSQLite.connection.query("SELECT null AS TABLE_CAT").executeSingle());
 
-        System.out.println(ConfigSQLite.connection.catalogs());
+        System.out.println(DBConfiguration.configuration(ConfigSQLite.class));
         System.out.println(ConfigSQLite.connection.schemes(""));
         System.out.println(ConfigSQLite.connection.tables("abcasd",""));
         System.out.println(ConfigSQLite.connection.columns("","", "project"));

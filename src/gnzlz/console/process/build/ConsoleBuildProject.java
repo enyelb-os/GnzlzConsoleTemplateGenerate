@@ -9,6 +9,7 @@ import tools.gnzlz.command.command.type.CommandString;
 import tools.gnzlz.command.group.GroupCommand;
 import tools.gnzlz.command.init.InitListCommand;
 import tools.gnzlz.command.process.Process;
+import tools.gnzlz.system.io.SystemIO;
 
 import java.util.ArrayList;
 
@@ -18,21 +19,21 @@ public class ConsoleBuildProject {
      * PROJECT_NAME
      */
     public static CommandString PROJECT_NAME = CommandString
-            .create("project_id")
-            .commands("--projectid", "-proid")
-            .required()
-            .message("Project name")
-            .value("");
+        .create("project_id")
+        .commands("--projectid", "-proid")
+        .required()
+        .message("Project name")
+        .value("");
 
     /**
      * PROJECT_OUT
      */
     public static CommandString PROJECT_OUT = CommandString
-            .create("project_out")
-            .commands("--projectout", "-proout")
-            .required()
-            .message("Project output")
-            .value("");
+        .create("project_out")
+        .commands("--projectout", "-proout")
+        .required()
+        .message("Project output")
+        .value("");
 
     /**
      * commandsBuildProject
@@ -66,7 +67,7 @@ public class ConsoleBuildProject {
                         BuildProjectController.createGroupCommand(projectData, project.type(), templates.manager())
                     );
                 } else {
-                    System.out.println("file not fount");
+                    SystemIO.OUT.println("file not fount");
                 }
             }
         }

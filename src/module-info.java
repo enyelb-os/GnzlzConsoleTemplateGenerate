@@ -10,6 +10,7 @@ module GnzlzConsoleTemplateGenerate {
     requires org.xerial.sqlitejdbc;
     requires mysql.connector.j;
 
+    requires tools.gnzlz.system.io;
     requires tools.gnzlz.database;
     requires tools.gnzlz.command;
     requires tools.gnzlz.filetemplate;

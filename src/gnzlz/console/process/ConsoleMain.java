@@ -6,6 +6,7 @@ import gnzlz.console.process.output.ConsoleOutput;
 import gnzlz.console.process.project.ConsoleProject;
 import tools.gnzlz.command.group.GroupCommand;
 import tools.gnzlz.command.group.ParentGroupCommand;
+import tools.gnzlz.database.model.DBConnection;
 
 public class ConsoleMain {
 
@@ -62,6 +63,9 @@ public class ConsoleMain {
      */
 
     public static void main(String[] args) {
+        DBConnection.outMetaData = false;
+        DBConnection.outMigration = false;
+        DBConnection.outModel = false;
         do {
             GroupCommand.process(args, PARENT);
         } while (!exit && (args == null || args.length == 0));
