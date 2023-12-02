@@ -5,11 +5,11 @@ import gnzlz.console.process.project.controller.ProjectController;
 import tools.gnzlz.command.init.InitListCommand;
 import tools.gnzlz.command.process.Process;
 import tools.gnzlz.command.result.ResultListCommand;
-import tools.gnzlz.command.command.type.CommandArray;
-import tools.gnzlz.command.command.type.CommandBoolean;
-import tools.gnzlz.command.command.type.CommandOptionString;
-import tools.gnzlz.command.command.type.CommandString;
-import tools.gnzlz.command.command.object.ListCommand;
+import tools.gnzlz.command.type.CommandArray;
+import tools.gnzlz.command.type.CommandBoolean;
+import tools.gnzlz.command.type.CommandOptionString;
+import tools.gnzlz.command.type.CommandString;
+import tools.gnzlz.command.object.ListCommand;
 
 import java.util.ArrayList;
 
