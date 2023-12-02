@@ -54,7 +54,6 @@ public class BuildProjectController {
         }
         if (group.groups().isEmpty()) {
             groupCommand.execute((args, commands) -> {
-                args.forEach(System.out::println);
                 Properties properties = Properties.create();
                 group.templates().forEach(template -> properties.add("templates", template));
                 Console.process(commands, manager, properties);
