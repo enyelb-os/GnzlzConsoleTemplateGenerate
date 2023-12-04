@@ -118,4 +118,52 @@ public class FunctionsValid {
 
         return true;
     };
+
+    /**
+     * GROUP_COMMAND
+     */
+    public static FunctionValidCommand GROUP_COMMAND = (value, error, allList, list) -> {
+        ArrayList<String> array = new ArrayList<>();
+        for (ResultListCommand group: list.array("groups")) {
+            array.add(group.string("command"));
+        }
+        if (array.contains(value.toString())) {
+            error.set("the group command name is already in use");
+            return false;
+        } else {
+            return true;
+        }
+    };
+
+    /**
+     * GROUP_USE_COMMANDS
+     */
+    public static FunctionValidCommand GROUP_USE_COMMANDS = (value, error, allList, list) -> {
+        ArrayList<String> array = new ArrayList<>();
+        for (ResultListCommand command: list.array("use")) {
+            array.add(command.string("name"));
+        }
+        if (array.contains(value.toString())) {
+            error.set("the command name is already in use");
+            return false;
+        } else {
+            return true;
+        }
+    };
+
+    /**
+     * GROUP_USE_TEMPLATES
+     */
+    public static FunctionValidCommand GROUP_USE_TEMPLATES = (value, error, allList, list) -> {
+        ArrayList<String> array = new ArrayList<>();
+        for (ResultListCommand template: list.array("templates")) {
+            array.add(template.string("name"));
+        }
+        if (array.contains(value.toString())) {
+            error.set("the template name is already in use");
+            return false;
+        } else {
+            return true;
+        }
+    };
 }

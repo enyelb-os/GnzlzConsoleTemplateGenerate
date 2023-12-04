@@ -1,6 +1,5 @@
 package gnzlz.console.process.project;
 
-import gnzlz.console.database.sqlite.config.repository.OutputRepository;
 import gnzlz.console.database.sqlite.config.repository.ProjectRepository;
 import gnzlz.console.process.FunctionsRequired;
 import gnzlz.console.process.FunctionsValid;
@@ -182,6 +181,7 @@ public class ConsoleProject {
         .create("name")
         .required()
         .message("Command name")
+        .valid(FunctionsValid.GROUP_USE_COMMANDS)
         .option(COMMAND_NAME);
 
     /**
@@ -200,6 +200,7 @@ public class ConsoleProject {
         .create("name")
         .required()
         .message("Template name")
+        .valid(FunctionsValid.GROUP_USE_TEMPLATES)
         .option(TEMPLATE_NAME);
 
     /**
