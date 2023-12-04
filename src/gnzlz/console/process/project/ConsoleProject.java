@@ -4,17 +4,16 @@ import gnzlz.console.database.sqlite.config.repository.ProjectRepository;
 import gnzlz.console.process.FunctionsRequired;
 import gnzlz.console.process.FunctionsValid;
 import gnzlz.console.process.project.controller.ProjectController;
-import tools.gnzlz.command.functional.FunctionValidCommand;
+import tools.gnzlz.command.command.functional.FunctionValidCommand;
 import tools.gnzlz.command.init.InitListCommand;
 import tools.gnzlz.command.process.Process;
 import tools.gnzlz.command.result.ResultListCommand;
-import tools.gnzlz.command.type.CommandArray;
-import tools.gnzlz.command.type.CommandBoolean;
-import tools.gnzlz.command.type.CommandOptionString;
-import tools.gnzlz.command.type.CommandString;
-import tools.gnzlz.command.object.ListCommand;
+import tools.gnzlz.command.CommandArray;
+import tools.gnzlz.command.CommandBoolean;
+import tools.gnzlz.command.CommandOptionString;
+import tools.gnzlz.command.CommandString;
+import tools.gnzlz.command.command.object.ListCommand;
 
-import java.io.File;
 import java.util.ArrayList;
 
 public class ConsoleProject {
@@ -172,7 +171,8 @@ public class ConsoleProject {
     public static CommandString GROUP_NAME = CommandString
         .create("command")
         .required()
-        .message("Group name");
+        .message("Group name")
+        .valid(FunctionsValid.GROUP_COMMAND);
 
     /**
      * GROUP_COMMAND_NAME

@@ -1,8 +1,8 @@
 package gnzlz.console.process.output;
 
 import gnzlz.console.database.sqlite.config.repository.OutputRepository;
-import tools.gnzlz.command.object.ListCommand;
-import tools.gnzlz.command.type.CommandString;
+import tools.gnzlz.command.command.object.ListCommand;
+import tools.gnzlz.command.CommandString;
 import tools.gnzlz.command.init.InitListCommand;
 import tools.gnzlz.command.process.Process;
 import tools.gnzlz.command.result.ResultListCommand;
