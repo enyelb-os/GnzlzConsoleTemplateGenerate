@@ -1,5 +1,6 @@
 package gnzlz.console.process.build;
 
+import gnzlz.console.process.FunctionsValid;
 import gnzlz.console.database.sqlite.config.repository.OutputRepository;
 import gnzlz.console.database.sqlite.config.repository.ProjectRepository;
 import gnzlz.console.process.build.controller.BuildProjectController;
@@ -33,6 +34,7 @@ public class ConsoleBuildProject {
         .commands("--projectout", "-proout")
         .required()
         .message("Project output")
+        .valid(FunctionsValid.DIRECTORY)
         .value("");
 
     /**

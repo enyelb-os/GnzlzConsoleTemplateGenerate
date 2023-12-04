@@ -5,6 +5,7 @@ module GnzlzConsoleTemplateGenerate {
     opens gnzlz.console.database.migration;
     opens gnzlz.console.file.json.project.data;
     opens gnzlz.console;
+    opens gnzlz.console.process;
 
     requires com.google.gson;
     requires org.xerial.sqlitejdbc;

@@ -30,7 +30,8 @@ public class ProjectController {
                 .name(commandCommand.string("name"))
                 .message(commandCommand.string("message"))
                 .required(commandCommand.bool("required"))
-                .type(commandCommand.string("type"));
+                .type(commandCommand.string("type"))
+                .value(commandCommand.string("value"));
             for (ResultListCommand commandOptions: commandCommand.array("options")) {
                 commands.options(commandOptions.string("option"));
             }
@@ -88,7 +89,7 @@ public class ProjectController {
                 .addCommand(ConsoleProject.TEMPLATE_TYPE, template.type())
             ).addCommand(ConsoleProject.COMMANDS, project.commands(), (command) -> InitListCommand.create()
                 .addCommand(ConsoleProject.COMMAND_NAME, command.name())
-                .addCommand(ConsoleProject.COMMAND_NAME, command.message())
+                .addCommand(ConsoleProject.COMMAND_MESSAGE, command.message())
                 .addCommand(ConsoleProject.COMMAND_REQUIRED, command.isRequired())
                 .addCommand(ConsoleProject.COMMAND_TYPE, command.type())
                 .addCommand(ConsoleProject.COMMAND_DEFAULT, command.value())

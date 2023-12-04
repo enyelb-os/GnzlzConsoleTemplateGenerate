@@ -1,7 +1,11 @@
 package gnzlz.console.process.project;
 
+import gnzlz.console.database.sqlite.config.repository.OutputRepository;
 import gnzlz.console.database.sqlite.config.repository.ProjectRepository;
+import gnzlz.console.process.FunctionsRequired;
+import gnzlz.console.process.FunctionsValid;
 import gnzlz.console.process.project.controller.ProjectController;
+import tools.gnzlz.command.functional.FunctionValidCommand;
 import tools.gnzlz.command.init.InitListCommand;
 import tools.gnzlz.command.process.Process;
 import tools.gnzlz.command.result.ResultListCommand;
@@ -11,9 +15,15 @@ import tools.gnzlz.command.type.CommandOptionString;
 import tools.gnzlz.command.type.CommandString;
 import tools.gnzlz.command.object.ListCommand;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class ConsoleProject {
+
+    /**
+     * path
+     */
+    public static String path = "";
 
     /**
      * PROJECT
@@ -38,7 +48,8 @@ public class ConsoleProject {
     public static CommandString TEMPLATE_NAME = CommandString
         .create("name")
         .required()
-        .message("Template name");
+        .message("Template name")
+        .valid(FunctionsValid.TEMPLATES_NAME);
 
     /**
      * TEMPLATE_PATH
@@ -46,6 +57,7 @@ public class ConsoleProject {
     public static CommandString TEMPLATE_PATH = CommandString
         .create("path")
         .required()
+        .valid(FunctionsValid.FILE_PATH)
         .message("Path file");
 
     /**
@@ -63,7 +75,7 @@ public class ConsoleProject {
     public static CommandArray TEMPLATES = CommandArray
         .create("templates")
         .required()
-        .message("Lista de templates")
+        .message("List of templates")
         .array(TEMPLATE_NAME, TEMPLATE_PATH, TEMPLATE_TYPE);
 
     /**
@@ -72,7 +84,8 @@ public class ConsoleProject {
     public static CommandString COMMAND_NAME = CommandString
         .create("name")
         .required()
-        .message("Nombre del comando");
+        .message("Command name")
+        .valid(FunctionsValid.COMMANDS_NAME);
 
     /**
      * COMMAND_MESSAGE
@@ -80,7 +93,7 @@ public class ConsoleProject {
     public static CommandString COMMAND_MESSAGE = CommandString
             .create("message")
             .required()
-            .message("Message");
+            .message("Command message");
 
     /**
      * COMMAND_REQUIRED
@@ -88,7 +101,7 @@ public class ConsoleProject {
     public static CommandBoolean COMMAND_REQUIRED = CommandBoolean
         .create("required")
         .required()
-        .message("Es requerido")
+        .message("Is required")
         .value(true);
 
     /**
@@ -97,7 +110,7 @@ public class ConsoleProject {
     public static CommandOptionString COMMAND_TYPE = CommandOptionString
         .create("type")
         .required()
-        .message("Tipo de comando")
+        .message("Command type")
         .option("number","string","option");
 
     /**
@@ -106,7 +119,8 @@ public class ConsoleProject {
     public static CommandString COMMAND_DEFAULT = CommandString
         .create("value")
         .required()
-        .message("Valor por defecto");
+        .valid(FunctionsValid.COMMAND_DEFAULT)
+        .message("Default");
 
     /**
      * COMMAND_OPTION
@@ -114,25 +128,26 @@ public class ConsoleProject {
     public static CommandString COMMAND_OPTION = CommandString
         .create("option")
         .required()
-        .message("Nombre de la opcion");
+        .message("Option name")
+        .valid(FunctionsValid.COMMAND_OPTIONS);
 
     /**
      * COMMAND_OPTIONS
      */
     public static CommandArray COMMAND_OPTIONS = CommandArray
         .create("options")
-        .required()
-        .message("Opciones")
+        .required(FunctionsRequired.OPTIONS)
+        .message("Options")
         .array(COMMAND_OPTION);
 
     /**
      * COMMAND_ARGS_NAME
      */
-    public static CommandOptionString COMMAND_ARGS_NAME = CommandOptionString
+    public static CommandString COMMAND_ARGS_NAME = CommandString
         .create("name")
         .required()
         .message("Arg")
-        .option(COMMAND_NAME);
+        .valid(FunctionsValid.ARGS);
 
     /**
      * COMMAND_ARGS
@@ -149,7 +164,7 @@ public class ConsoleProject {
     public static CommandArray COMMANDS = CommandArray
         .create("commands")
         .required()
-        .message("Lista de comandos")
+        .message("List of commands")
         .array(COMMAND_NAME, COMMAND_MESSAGE, COMMAND_REQUIRED, COMMAND_TYPE, COMMAND_ARGS, COMMAND_OPTIONS, COMMAND_DEFAULT);
 
     /**
@@ -158,7 +173,7 @@ public class ConsoleProject {
     public static CommandString GROUP_NAME = CommandString
         .create("command")
         .required()
-        .message("Nombre del comando");
+        .message("Group name");
 
     /**
      * GROUP_COMMAND_NAME
@@ -166,7 +181,7 @@ public class ConsoleProject {
     public static CommandOptionString GROUP_COMMAND_NAME = CommandOptionString
         .create("name")
         .required()
-        .message("Commando a usar")
+        .message("Command name")
         .option(COMMAND_NAME);
 
     /**
@@ -175,7 +190,7 @@ public class ConsoleProject {
     public static CommandArray GROUP_USE = CommandArray
         .create("use")
         .required()
-        .message("Comandos")
+        .message("Commands")
         .array(GROUP_COMMAND_NAME);
 
     /**
@@ -184,7 +199,7 @@ public class ConsoleProject {
     public static CommandOptionString GROUP_TEMPLATE_NAME = CommandOptionString
         .create("name")
         .required()
-        .message("Templates a usar")
+        .message("Template name")
         .option(TEMPLATE_NAME);
 
     /**
@@ -202,7 +217,7 @@ public class ConsoleProject {
     public static CommandArray GROUP_GROUP = CommandArray
         .create("groups")
         .required()
-        .message("Lista de grupos");
+        .message("List of groups");
 
     static {
         GROUP_GROUP.array(GROUP_NAME, GROUP_USE, GROUP_TEMPLATES, GROUP_GROUP);
@@ -223,6 +238,7 @@ public class ConsoleProject {
             .commands("--projectpath", "-propath")
             .required()
             .message("Project path")
+            .valid(FunctionValidCommand.FOLDER)
             .value(System.getProperty("user.dir"));
 
     /**
@@ -259,7 +275,7 @@ public class ConsoleProject {
         PROJECT_DATABASE.required(db).valueOption("none");
 
         ResultListCommand commands = Process.argsAndQuestions(args, commandsCreateProject, oldCommands);
-        String path = commands.string("project_path");
+        path = commands.string("project_path");
         String file = commands.string("project_name");
         String database = commands.string("project_database");
 
