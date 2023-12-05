@@ -10,7 +10,7 @@ import tools.gnzlz.database.model.DBConfiguration;
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("Test "+ ConfigSQLite.connection.query("SELECT null AS TABLE_CAT").executeSingle());
+        System.out.println("Test "+ ConfigSQLite.connection.query("SELECT 1+1").executeSingle());
 
         System.out.println(DBConfiguration.configuration(ConfigSQLite.class));
         System.out.println(ConfigSQLite.connection.schemes(""));

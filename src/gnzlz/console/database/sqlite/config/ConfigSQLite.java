@@ -20,7 +20,7 @@ public class ConfigSQLite extends DBConfiguration {
     protected void initConnection(PropertiesConnection connection) {
         connection
             .dialect(SQLite).protocol(JDBC.PREFIX).driver(new JDBC())
-            .path(System.getProperty("user.dir").concat("/").concat("config.db")).name("config");
+            .path(System.getProperty("user.dir").concat("/").concat("configtest.db")).name("config");
     }
 
     @Override
