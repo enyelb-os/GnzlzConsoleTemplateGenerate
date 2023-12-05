@@ -42,6 +42,13 @@ public class ProjectController {
         }
         parseGroupsToGroup(project, null, command);
 
+        Project projectOld = JSON.get(JSON.path(path) + file, Project.class);
+        if(projectOld != null) {
+            for (FunctionCast cast: projectOld.functionsCast()) {
+                project.functionsCast(cast);
+            }
+        }
+
         return JSON.save(JSON.path(path) + file, project);
     }
 

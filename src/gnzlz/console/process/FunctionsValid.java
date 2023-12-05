@@ -93,7 +93,7 @@ public class FunctionsValid {
      */
     public static FunctionValidCommand COMMAND_OPTIONS = (data) -> {
         ArrayList<String> array = new ArrayList<>();
-        for (ResultListCommand option: data.list.array("options")) {
+        for (ResultListCommand option: data.arraylist.array()) {
             array.add(option.string("option"));
         }
         if (array.contains(data.value.toString())) {
@@ -124,8 +124,8 @@ public class FunctionsValid {
      */
     public static FunctionValidCommand GROUP_COMMAND = (data) -> {
         ArrayList<String> array = new ArrayList<>();
-        for (ResultListCommand group: data.list.array("groups")) {
-            array.add(group.string("command"));
+        for (ResultListCommand list : data.arraylist.array()) {
+            array.add(list.string("command"));
         }
         if (array.contains(data.value.toString())) {
             data.error.set("the group command name is already in use");
@@ -140,8 +140,8 @@ public class FunctionsValid {
      */
     public static FunctionValidCommand GROUP_USE_COMMANDS = (data) -> {
         ArrayList<String> array = new ArrayList<>();
-        for (ResultListCommand command: data.list.array("use")) {
-            array.add(command.string("name"));
+        for (ResultListCommand list : data.arraylist.array()) {
+            array.add(list.string("name"));
         }
         if (array.contains(data.value.toString())) {
             data.error.set("the command name is already in use");
@@ -156,8 +156,8 @@ public class FunctionsValid {
      */
     public static FunctionValidCommand GROUP_USE_TEMPLATES = (data) -> {
         ArrayList<String> array = new ArrayList<>();
-        for (ResultListCommand template: data.list.array("templates")) {
-            array.add(template.string("name"));
+        for (ResultListCommand list : data.arraylist.array()) {
+            array.add(list.string("name"));
         }
         if (array.contains(data.value.toString())) {
             data.error.set("the template name is already in use");
