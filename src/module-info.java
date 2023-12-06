@@ -1,11 +1,11 @@
 module GnzlzConsoleTemplateGenerate {
 
-    opens gnzlz.console.database.sqlite.config;
-    opens gnzlz.console.database.sqlite.config.model;
-    opens gnzlz.console.database.migration;
-    opens gnzlz.console.file.json.project.data;
-    opens gnzlz.console;
-    opens gnzlz.console.process;
+    opens tools.gnzlz.console.database.sqlite.config;
+    opens tools.gnzlz.console.database.sqlite.config.model;
+    opens tools.gnzlz.console.database.migration;
+    opens tools.gnzlz.console.file.json.project.data;
+    opens tools.gnzlz.console;
+    opens tools.gnzlz.console.process;
 
     requires com.google.gson;
     requires org.xerial.sqlitejdbc;

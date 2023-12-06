@@ -1,4 +1,4 @@
 Manifest-Version: 1.0
-Main-Class: gnzlz.console.process.ConsoleMain
+Main-Class: tools.gnzlz.console.process.ConsoleMain
 
 
