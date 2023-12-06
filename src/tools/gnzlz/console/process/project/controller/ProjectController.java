@@ -3,7 +3,6 @@ package tools.gnzlz.console.process.project.controller;
 import tools.gnzlz.console.file.json.JSON;
 import tools.gnzlz.console.file.json.project.data.*;
 import tools.gnzlz.console.process.project.ConsoleProject;
-import gnzlz.console.file.json.project.data.*;
 import tools.gnzlz.command.init.InitListCommand;
 import tools.gnzlz.command.result.ResultListCommand;
 
