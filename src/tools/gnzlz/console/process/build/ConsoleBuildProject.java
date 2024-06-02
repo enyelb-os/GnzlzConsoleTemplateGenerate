@@ -10,9 +10,11 @@ import tools.gnzlz.command.CommandString;
 import tools.gnzlz.command.group.GroupCommand;
 import tools.gnzlz.command.init.InitListCommand;
 import tools.gnzlz.command.process.Process;
+import tools.gnzlz.database.model.DBConnection;
 import tools.gnzlz.system.io.SystemIO;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ConsoleBuildProject {
 
@@ -73,5 +75,16 @@ public class ConsoleBuildProject {
                 }
             }
         }
+    }
+
+    /**
+     * main
+     * @param args a
+     */
+    public static void main(String[] args) {
+        DBConnection.outMetaData = false;
+        DBConnection.outMigration = false;
+        DBConnection.outModel = false;
+        ConsoleBuildProject.buildProject(new ArrayList<>(Arrays.asList(args)));
     }
 }

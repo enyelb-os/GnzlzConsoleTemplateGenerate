@@ -37,4 +37,11 @@ public class ProjectRepository {
             .where("name", "=", hash.key()).or()
             .where("hash", "=", hash.hash()).executeQuery();
     }
+
+    /**
+     * findAll
+     */
+    public static ArrayList<Project> findAll() {
+        return Project.selects().executeQuery();
+    }
 }

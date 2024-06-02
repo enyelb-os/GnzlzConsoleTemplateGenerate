@@ -30,7 +30,7 @@ public class BuildProjectController {
         ParentGroupCommand parentGroupCommand = ParentGroupCommand.create(BuildProjectController.getListCommand(type));
         ListCommand listCommand = BuildProjectController.createListCommand(project.commands());
         for (Group groupAdd: project.groups()) {
-            parentGroupCommand.addGroup(BuildProjectController.createGroupCommand(groupAdd, listCommand, manager));
+            parentGroupCommand.addGroup(BuildProjectController.createGroupCommand(groupAdd, listCommand, type, manager));
         }
         return parentGroupCommand;
     }
@@ -41,7 +41,7 @@ public class BuildProjectController {
      * @param listCommand listCommand
      * @param manager manager
      */
-    public static GroupCommand createGroupCommand(Group group, ListCommand listCommand, TemplateManager manager) {
+    public static GroupCommand createGroupCommand(Group group, ListCommand listCommand, String type, TemplateManager manager) {
         GroupCommand groupCommand = group.command().equalsIgnoreCase("default") ?
                 GroupCommand.create() :
                 GroupCommand.create(group.command());
@@ -50,14 +50,13 @@ public class BuildProjectController {
             groupCommand.use(listCommand, use);
         }
         for (Group groupAdd: group.groups()) {
-            groupCommand.addGroup(BuildProjectController.createGroupCommand(groupAdd, listCommand, manager));
+            groupCommand.addGroup(BuildProjectController.createGroupCommand(groupAdd, listCommand, type, manager));
         }
         if (group.groups().isEmpty()) {
             groupCommand.execute((args, commands) -> {
                 Properties properties = Properties.create();
                 group.templates().forEach(template -> properties.add("templates", template));
                 Console.process(commands, manager, properties);
-
             });
         }
         return groupCommand;

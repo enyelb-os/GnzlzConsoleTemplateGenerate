@@ -18,7 +18,7 @@ public class ConsoleMain {
     /**
      * GROUP_EXIT
      */
-    private final static GroupCommand GROUP_EXIT= GroupCommand.create("exit").execute((args, command) -> {
+    private final static GroupCommand GROUP_EXIT = GroupCommand.create("exit").execute((args, command) -> {
         exit = true;
     });
 
@@ -30,11 +30,14 @@ public class ConsoleMain {
             GroupCommand.create("db").addGroup(
                 GroupCommand.create("create").execute((args, command) -> {
                     ConsoleProject.createAndUpdateProjectJson(true, args);
-                }), GROUP_EXIT
+                })
             ),
             GroupCommand.create().addGroup(
                 GroupCommand.create("create").execute((args, command) -> {
                     ConsoleProject.createAndUpdateProjectJson(false, args);
+                }),
+                GroupCommand.create("list").execute((args, command) -> {
+                    ConsoleProject.listProjectJson(args);
                 }), GROUP_EXIT
             )
         ),
@@ -42,11 +45,17 @@ public class ConsoleMain {
             GroupCommand.create("db").addGroup(
                 GroupCommand.create("create").execute((args, command) -> {
                     ConsoleDatabase.createDatabase(args);
+                }),
+                GroupCommand.create("list").execute((args, command) -> {
+                    ConsoleDatabase.listDatabase(args);
                 }), GROUP_EXIT
             ),
             GroupCommand.create("out").addGroup(
                 GroupCommand.create("create").execute((args, command) -> {
                     ConsoleOutput.createOutput(args);
+                }),
+                GroupCommand.create("list").execute((args, command) -> {
+                    ConsoleOutput.listOutput(args);
                 }), GROUP_EXIT
             )
         ),

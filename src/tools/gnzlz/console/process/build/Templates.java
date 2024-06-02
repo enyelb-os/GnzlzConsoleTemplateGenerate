@@ -1,9 +1,11 @@
 package tools.gnzlz.console.process.build;
 
+import tools.gnzlz.filetemplete.TemplateObjects;
 import tools.gnzlz.filetemplete.TemplatesCatalog;
 import tools.gnzlz.filetemplete.TemplatesModel;
 import tools.gnzlz.filetemplete.TemplatesScheme;
 import tools.gnzlz.template.TemplateManager;
+import tools.gnzlz.template.TemplatesNone;
 
 public class Templates {
 
@@ -17,7 +19,6 @@ public class Templates {
      */
     private final TemplatesCatalog database;
 
-
     /**
      * templateScheme
      */
@@ -29,6 +30,11 @@ public class Templates {
     private final TemplatesModel model;
 
     /**
+     * templateNone
+     */
+    private final TemplatesNone none;
+
+    /**
      * Templates
      */
     protected Templates(String path, String out){
@@ -37,8 +43,9 @@ public class Templates {
         database = TemplatesCatalog.create();
         scheme = TemplatesScheme.create();
         model = TemplatesModel.create();
+        none = TemplatesNone.create(TemplateObjects.setObjectsCommands);
 
-        manager.add(database).add(scheme).add(model);
+        manager.add(database).add(scheme).add(model).add(none);
     }
 
     /**
@@ -68,7 +75,7 @@ public class Templates {
                 model.load(name, path);
                 break;
             case "none" :
-                //templatesModel.load(template.name(), JSON.path(project.path()) + template.path());
+                none.load(name, path);
                 break;
         }
     }

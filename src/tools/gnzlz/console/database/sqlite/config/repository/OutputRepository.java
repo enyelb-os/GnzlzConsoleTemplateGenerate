@@ -51,4 +51,11 @@ public class OutputRepository {
         }
         return id;
     }
+
+    /**
+     * findAll
+     */
+    public static ArrayList<Output> findAll() {
+        return Output.selects().executeQuery();
+    }
 }

@@ -2,6 +2,8 @@ package tools.gnzlz.console.database.sqlite.config.repository;
 
 import tools.gnzlz.console.database.sqlite.config.model.Database;
 
+import java.util.ArrayList;
+
 public class DatabaseRepository {
 
     /**
@@ -32,7 +34,7 @@ public class DatabaseRepository {
      * @param host host
      */
     private static Database createServer(String type, String name, String user, String port, String password, String host) {
-        Database database = database = Database.selects()
+        Database database = Database.selects()
             .where("name", "=", name)
             .where("user", "=", user)
             .where("port", "=", port)
@@ -56,7 +58,7 @@ public class DatabaseRepository {
      * @param path path
      */
     private static Database createSqlite(String type, String name, String path) {
-        Database database = database = Database.selects()
+        Database database = Database.selects()
             .where("name", "=", name)
             .where("path", "=", path)
             .executeSingle();
@@ -68,5 +70,12 @@ public class DatabaseRepository {
                 .save();
         }
         return database;
+    }
+
+    /**
+     * findAll
+     */
+    public static ArrayList<Database> findAll() {
+        return Database.selects().executeQuery();
     }
 }
