@@ -36,6 +36,9 @@ public class ConsoleMain {
                 GroupCommand.create("create").execute((args, command) -> {
                     ConsoleProject.createAndUpdateProjectJson(false, args);
                 }),
+                GroupCommand.create("edit").execute((args, command) -> {
+                    ConsoleProject.editAndUpdateProjectJson(args);
+                }),
                 GroupCommand.create("list").execute((args, command) -> {
                     ConsoleProject.listProjectJson(args);
                 }), GROUP_EXIT
@@ -46,6 +49,9 @@ public class ConsoleMain {
                 GroupCommand.create("create").execute((args, command) -> {
                     ConsoleDatabase.createDatabase(args);
                 }),
+                GroupCommand.create("edit").execute((args, command) -> {
+                    //ConsoleProject.listProjectJson(args);
+                }),
                 GroupCommand.create("list").execute((args, command) -> {
                     ConsoleDatabase.listDatabase(args);
                 }), GROUP_EXIT
@@ -53,6 +59,9 @@ public class ConsoleMain {
             GroupCommand.create("out").addGroup(
                 GroupCommand.create("create").execute((args, command) -> {
                     ConsoleOutput.createOutput(args);
+                }),
+                GroupCommand.create("edit").execute((args, command) -> {
+                    //ConsoleProject.listProjectJson(args);
                 }),
                 GroupCommand.create("list").execute((args, command) -> {
                     ConsoleOutput.listOutput(args);

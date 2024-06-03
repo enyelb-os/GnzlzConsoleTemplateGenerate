@@ -2,9 +2,9 @@ package tools.gnzlz.console.process.project.controller;
 
 import tools.gnzlz.console.file.json.JSON;
 import tools.gnzlz.console.file.json.project.data.*;
-import tools.gnzlz.console.process.project.ConsoleProject;
 import tools.gnzlz.command.init.InitListCommand;
 import tools.gnzlz.command.result.ResultListCommand;
+import tools.gnzlz.console.process.project.model.CommandSchemeDataProject;
 
 public class ProjectController {
 
@@ -88,25 +88,25 @@ public class ProjectController {
             return InitListCommand.create();
         }
         return InitListCommand.create()
-            .addCommand(ConsoleProject.PROJECT, project.name())
-            .addCommand(ConsoleProject.VERSION, project.version())
-            .addCommand(ConsoleProject.TEMPLATES, project.templates(), (template) -> InitListCommand.create()
-                .addCommand(ConsoleProject.TEMPLATE_NAME, template.name())
-                .addCommand(ConsoleProject.TEMPLATE_PATH, template.path())
-                .addCommand(ConsoleProject.TEMPLATE_TYPE, template.type())
-            ).addCommand(ConsoleProject.COMMANDS, project.commands(), (command) -> InitListCommand.create()
-                .addCommand(ConsoleProject.COMMAND_NAME, command.name())
-                .addCommand(ConsoleProject.COMMAND_MESSAGE, command.message())
-                .addCommand(ConsoleProject.COMMAND_REQUIRED, command.isRequired())
-                .addCommand(ConsoleProject.COMMAND_TYPE, command.type())
-                .addCommand(ConsoleProject.COMMAND_DEFAULT, command.value())
-                .addCommand(ConsoleProject.COMMAND_OPTIONS, command.options(), (option) -> InitListCommand.create()
-                    .addCommand(ConsoleProject.COMMAND_OPTION, option)
+            .addCommand(CommandSchemeDataProject.PROJECT, project.name())
+            .addCommand(CommandSchemeDataProject.VERSION, project.version())
+            .addCommand(CommandSchemeDataProject.TEMPLATES, project.templates(), (template) -> InitListCommand.create()
+                .addCommand(CommandSchemeDataProject.TEMPLATE_NAME, template.name())
+                .addCommand(CommandSchemeDataProject.TEMPLATE_PATH, template.path())
+                .addCommand(CommandSchemeDataProject.TEMPLATE_TYPE, template.type())
+            ).addCommand(CommandSchemeDataProject.COMMANDS, project.commands(), (command) -> InitListCommand.create()
+                .addCommand(CommandSchemeDataProject.COMMAND_NAME, command.name())
+                .addCommand(CommandSchemeDataProject.COMMAND_MESSAGE, command.message())
+                .addCommand(CommandSchemeDataProject.COMMAND_REQUIRED, command.isRequired())
+                .addCommand(CommandSchemeDataProject.COMMAND_TYPE, command.type())
+                .addCommand(CommandSchemeDataProject.COMMAND_DEFAULT, command.value())
+                .addCommand(CommandSchemeDataProject.COMMAND_OPTIONS, command.options(), (option) -> InitListCommand.create()
+                    .addCommand(CommandSchemeDataProject.COMMAND_OPTION, option)
                 )
-                .addCommand(ConsoleProject.COMMAND_ARGS, command.args(), (arg) -> InitListCommand.create()
-                    .addCommand(ConsoleProject.COMMAND_ARGS_NAME, arg)
+                .addCommand(CommandSchemeDataProject.COMMAND_ARGS, command.args(), (arg) -> InitListCommand.create()
+                    .addCommand(CommandSchemeDataProject.COMMAND_ARGS_NAME, arg)
                 )
-            ).addCommand(ConsoleProject.GROUP_GROUP, project.groups(), ProjectController::parseGroupsToGroup);
+            ).addCommand(CommandSchemeDataProject.GROUP_GROUP, project.groups(), ProjectController::parseGroupsToGroup);
     }
 
     /**
@@ -115,12 +115,12 @@ public class ProjectController {
      */
     private static InitListCommand parseGroupsToGroup(Group group) {
         return InitListCommand.create()
-            .addCommand(ConsoleProject.GROUP_NAME, group.command())
-            .addCommand(ConsoleProject.GROUP_USE, group.use(), (use) -> InitListCommand.create()
-                .addCommand(ConsoleProject.GROUP_COMMAND_NAME, use)
-            ).addCommand(ConsoleProject.GROUP_TEMPLATES, group.templates(), (template) -> InitListCommand.create()
-                .addCommand(ConsoleProject.GROUP_TEMPLATE_NAME, template)
-            ).addCommand(ConsoleProject.GROUP_GROUP, group.groups(), ProjectController::parseGroupsToGroup);
+            .addCommand(CommandSchemeDataProject.GROUP_NAME, group.command())
+            .addCommand(CommandSchemeDataProject.GROUP_USE, group.use(), (use) -> InitListCommand.create()
+                .addCommand(CommandSchemeDataProject.GROUP_COMMAND_NAME, use)
+            ).addCommand(CommandSchemeDataProject.GROUP_TEMPLATES, group.templates(), (template) -> InitListCommand.create()
+                .addCommand(CommandSchemeDataProject.GROUP_TEMPLATE_NAME, template)
+            ).addCommand(CommandSchemeDataProject.GROUP_GROUP, group.groups(), ProjectController::parseGroupsToGroup);
     }
 
     /**

@@ -1,16 +1,21 @@
 package tools.gnzlz.console.process.build;
 
+import tools.gnzlz.command.result.ResultListCommand;
+import tools.gnzlz.console.database.sqlite.config.model.Project;
 import tools.gnzlz.console.process.FunctionsValid;
 import tools.gnzlz.console.database.sqlite.config.repository.OutputRepository;
 import tools.gnzlz.console.database.sqlite.config.repository.ProjectRepository;
 import tools.gnzlz.console.process.build.controller.BuildProjectController;
+import tools.gnzlz.console.process.project.ConsoleProject;
 import tools.gnzlz.console.process.project.controller.ProjectController;
 import tools.gnzlz.command.command.object.ListCommand;
 import tools.gnzlz.command.CommandString;
 import tools.gnzlz.command.group.GroupCommand;
 import tools.gnzlz.command.init.InitListCommand;
 import tools.gnzlz.command.process.Process;
+import tools.gnzlz.console.process.project.model.CommandSchemeDataProject;
 import tools.gnzlz.database.model.DBConnection;
+import tools.gnzlz.system.ansi.Color;
 import tools.gnzlz.system.io.SystemIO;
 
 import java.util.ArrayList;
@@ -56,8 +61,28 @@ public class ConsoleBuildProject {
         var projects = ProjectRepository.findByHash(commands.string("project_id"));
         var out = OutputRepository.findByHashToPath(commands.string("project_out"));
 
-        if (projects.size() == 1) {
-            for (var project : projects) {
+        if (projects.isEmpty()) {
+            SystemIO.OUT.println(Color.RED.print("No results found, press enter to continue"));
+            SystemIO.INP.process();
+            return;
+        }
+
+        String line = "";
+        Project project;
+        do {
+            int index = 0;
+            if (projects.size() > 1) {
+                ConsoleProject.printListProjectJson(projects);
+                line = SystemIO.INP.process().toString();
+                try {
+                    index = Integer.parseInt(line) - 1;
+                } catch (NumberFormatException e) {
+                    index = -1;
+                }
+            }
+            project = (index >= 0 && projects.size() > index) ? projects.get(index) : null;
+
+            if (project != null) {
                 Templates templates = Templates.create(project.path(), out);
                 var projectData = ProjectController.getProjectFileJson(project.path() + project.file());
                 if (projectData != null) {
@@ -74,7 +99,7 @@ public class ConsoleBuildProject {
                     SystemIO.OUT.println("file not fount");
                 }
             }
-        }
+        } while(project == null && !line.equalsIgnoreCase("exit"));
     }
 
     /**

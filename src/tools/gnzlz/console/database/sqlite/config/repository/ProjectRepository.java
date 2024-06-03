@@ -34,7 +34,7 @@ public class ProjectRepository {
     public static ArrayList<Project> findByHash(String id) {
         var hash = Repository.parseHash(id);
         return Project.selects()
-            .where("name", "=", hash.key()).or()
+            .like("name", "%"+hash.key()+"%").or()
             .where("hash", "=", hash.hash()).executeQuery();
     }
 
