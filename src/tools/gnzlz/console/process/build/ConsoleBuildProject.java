@@ -1,6 +1,5 @@
 package tools.gnzlz.console.process.build;
 
-import tools.gnzlz.command.result.ResultListCommand;
 import tools.gnzlz.console.database.sqlite.config.model.Project;
 import tools.gnzlz.console.process.FunctionsValid;
 import tools.gnzlz.console.database.sqlite.config.repository.OutputRepository;
@@ -13,13 +12,10 @@ import tools.gnzlz.command.CommandString;
 import tools.gnzlz.command.group.GroupCommand;
 import tools.gnzlz.command.init.InitListCommand;
 import tools.gnzlz.command.process.Process;
-import tools.gnzlz.console.process.project.model.CommandSchemeDataProject;
-import tools.gnzlz.database.model.DBConnection;
 import tools.gnzlz.system.ansi.Color;
 import tools.gnzlz.system.io.SystemIO;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class ConsoleBuildProject {
 
@@ -53,6 +49,7 @@ public class ConsoleBuildProject {
 
     /**
      * buildProject
+     * @param args a
      */
     public static void buildProject(ArrayList<String> args) {
         var oldCommands = InitListCommand.create();
@@ -72,7 +69,7 @@ public class ConsoleBuildProject {
         do {
             int index = 0;
             if (projects.size() > 1) {
-                ConsoleProject.printListProjectJson(projects);
+                ConsoleProject.printListProjectJson(projects, true);
                 line = SystemIO.INP.process().toString();
                 try {
                     index = Integer.parseInt(line) - 1;
@@ -99,17 +96,6 @@ public class ConsoleBuildProject {
                     SystemIO.OUT.println("file not fount");
                 }
             }
-        } while(project == null && !line.equalsIgnoreCase("exit"));
-    }
-
-    /**
-     * main
-     * @param args a
-     */
-    public static void main(String[] args) {
-        DBConnection.outMetaData = false;
-        DBConnection.outMigration = false;
-        DBConnection.outModel = false;
-        ConsoleBuildProject.buildProject(new ArrayList<>(Arrays.asList(args)));
+        } while(project == null && !line.equalsIgnoreCase("0") && !line.equalsIgnoreCase("exit"));
     }
 }

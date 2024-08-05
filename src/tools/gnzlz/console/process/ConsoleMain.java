@@ -50,7 +50,7 @@ public class ConsoleMain {
                     ConsoleDatabase.createDatabase(args);
                 }),
                 GroupCommand.create("edit").execute((args, command) -> {
-                    //ConsoleProject.listProjectJson(args);
+                    ConsoleDatabase.editDatabase(args);
                 }),
                 GroupCommand.create("list").execute((args, command) -> {
                     ConsoleDatabase.listDatabase(args);
@@ -61,7 +61,7 @@ public class ConsoleMain {
                     ConsoleOutput.createOutput(args);
                 }),
                 GroupCommand.create("edit").execute((args, command) -> {
-                    //ConsoleProject.listProjectJson(args);
+                    ConsoleOutput.editOutput(args);
                 }),
                 GroupCommand.create("list").execute((args, command) -> {
                     ConsoleOutput.listOutput(args);

@@ -26,18 +26,34 @@ public class OutputRepository {
     }
 
     /**
-     * create
+     * update
+     * @param id id
+     * @param path path
+     * @param name name
+     */
+    public static Output update(int id, String path, String name) {
+        Output output = Output.selects()
+            .where("id", "=", id).executeSingle();
+
+        if (output != null) {
+            output.path(JSON.path(path)).name(name).save();
+        }
+        return output;
+    }
+
+    /**
+     * findByHash
      * @param id id
      */
     public static ArrayList<Output> findByHash(String id) {
         var hash = Repository.parseHash(id);
         return Output.selects()
-            .where("name", "=", hash.key()).or()
+            .like("name", "%"+hash.key()+"%").or()
             .where("hash", "=", hash.hash()).executeQuery();
     }
 
     /**
-     * create
+     * findByHashToPath
      * @param id id
      */
     public static String findByHashToPath(String id) {

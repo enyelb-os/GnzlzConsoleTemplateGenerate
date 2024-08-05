@@ -12,6 +12,7 @@ import tools.gnzlz.console.process.project.model.CommandSchemeEditProject;
 import tools.gnzlz.database.model.DBConnection;
 import tools.gnzlz.system.ansi.Color;
 import tools.gnzlz.system.io.SystemIO;
+import tools.gnzlz.system.text.TextIO;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,13 +48,14 @@ public class ConsoleProject {
     }
 
     /**
-     * createAndUpdateProjectJson
+     * editAndUpdateProjectJson
      * @param args a
      */
     public static void editAndUpdateProjectJson(ArrayList<String> args) {
         InitListCommand oldCommands = InitListCommand.create();
 
         ResultListCommand commands = Process.argsAndQuestions(args, CommandSchemeEditProject.commands, oldCommands);
+        var projectIdSearch = !commands.string("project_id").isEmpty();
         var projects = ProjectRepository.findByHash(commands.string("project_id"));
 
         if (projects.isEmpty()) {
@@ -66,8 +68,9 @@ public class ConsoleProject {
         Project project;
         do {
             int index = 0;
-            if (projects.size() > 1) {
-                ConsoleProject.printListProjectJson(projects);
+            if (projects.size() > 1 || !projectIdSearch) {
+                ConsoleProject.printListProjectJson(projects, true);
+                SystemIO.OUT.print(Color.GREEN.print("Choose an option?:"));
                 line = SystemIO.INP.process().toString();
                 try {
                     index = Integer.parseInt(line) - 1;
@@ -79,11 +82,10 @@ public class ConsoleProject {
 
             if (project != null) {
                 oldCommands = ProjectController.parseProjectToInitListCommand(project.path(), project.file());
-                System.out.println(oldCommands);
                 ResultListCommand newCommands = Process.argsAndQuestions(args, CommandSchemeDataProject.commands, oldCommands);
                 ProjectController.createProjectFileJson(project.path(), project.file(), newCommands);
             }
-        } while(project == null && !line.equalsIgnoreCase("exit"));
+        } while(project == null && !line.equalsIgnoreCase("0") && !line.equalsIgnoreCase("exit"));
     }
 
     /**
@@ -92,67 +94,35 @@ public class ConsoleProject {
      */
     public static void listProjectJson(ArrayList<String> args) {
         var list = ProjectRepository.findAll();
-        SystemIO.OUT.println("");
         if (list.isEmpty()) {
             SystemIO.OUT.println(Color.RED.print("Projects is empty, press enter to continue"));
             SystemIO.INP.process();
             return;
         }
-        ConsoleProject.printListProjectJson(list);
-        SystemIO.OUT.println("");
+        ConsoleProject.printListProjectJson(list, false);
         SystemIO.OUT.println(Color.RED.print("Press enter to continue"));
         SystemIO.INP.process();
     }
 
     /**
-     * listProjectJson
+     * printListProjectJson
      * @param list l
      */
-    public static void printListProjectJson(ArrayList<Project> list) {
+    public static void printListProjectJson(ArrayList<Project> list, boolean exit) {
         AtomicInteger i = new AtomicInteger(1);
+        SystemIO.OUT.println(Color.BLACK.print(Color.WHITE,TextIO.center("List Projects")));
         list.forEach(project -> {
             SystemIO.OUT.println(
-                Color.BLACK.print(Color.WHITE,"["+ i +"]") + " " +
+                Color.BLACK.print(Color.WHITE,"("+ i +")") + " " +
                 Color.BLUE.print(project.name() + ":" + project.hash()) + Color.WHITE.print(" (") +
                 Color.PURPLE.print(project.type()) + Color.WHITE.print(" | ") +
                 Color.GREEN.print(project.path()) + Color.WHITE.print(")")
             );
             i.getAndIncrement();
         });
-    }
-
-    /**
-     * main
-     * @param args a
-     */
-    public static void main(String[] args) {
-        DBConnection.outMetaData = false;
-        DBConnection.outMigration = false;
-        DBConnection.outModel = false;
-        ConsoleProject.mainNONE(args);
-    }
-
-    /**
-     * mainDB
-     * @param args a
-     */
-    public static void mainDB(String[] args) {
-        ConsoleProject.createAndUpdateProjectJson(true, new ArrayList<>(Arrays.asList(args)));
-    }
-
-    /**
-     * mainNONE
-     * @param args a
-     */
-    public static void mainNONE(String[] args) {
-        ConsoleProject.createAndUpdateProjectJson(false, new ArrayList<>(Arrays.asList(args)));
-    }
-
-    /**
-     * main
-     * @param args a
-     */
-    public static void mainList(String[] args) {
-        ConsoleProject.listProjectJson(new ArrayList<>(Arrays.asList(args)));
+        if (exit) {
+            SystemIO.OUT.println(Color.BLACK.print(Color.WHITE,"(0)") + Color.RED.print(" Exit continue"));
+        }
+        SystemIO.OUT.println(Color.BLACK.print(Color.WHITE, TextIO.repeat(" ")));
     }
 }

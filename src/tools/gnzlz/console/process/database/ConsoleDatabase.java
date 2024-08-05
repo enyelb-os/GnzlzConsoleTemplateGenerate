@@ -1,16 +1,19 @@
 package tools.gnzlz.console.process.database;
 
+import tools.gnzlz.console.database.sqlite.config.model.Database;
 import tools.gnzlz.console.database.sqlite.config.repository.DatabaseRepository;
 import tools.gnzlz.command.init.InitListCommand;
 import tools.gnzlz.command.process.Process;
 import tools.gnzlz.command.result.ResultListCommand;
-import tools.gnzlz.database.model.DBConnection;
+import tools.gnzlz.console.process.database.controller.DatabaseController;
+import tools.gnzlz.console.process.database.model.CommandSchemeEditDatabase;
+import tools.gnzlz.console.process.output.model.CommandSchemeCreateOutput;
 import tools.gnzlz.filetemplete.Console;
 import tools.gnzlz.system.ansi.Color;
 import tools.gnzlz.system.io.SystemIO;
+import tools.gnzlz.system.text.TextIO;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ConsoleDatabase {
@@ -34,29 +37,89 @@ public class ConsoleDatabase {
     }
 
     /**
+     * editDatabase
+     * @param args a
+     */
+    public static void editDatabase(ArrayList<String> args) {
+        InitListCommand oldCommands = InitListCommand.create();
+
+        ResultListCommand commands = Process.argsAndQuestions(args, CommandSchemeEditDatabase.commands, oldCommands);
+        var databaseIdSearch = !commands.string("database_id").isEmpty();
+        var databases = DatabaseRepository.findByHash(commands.string("database_id"));
+
+        if (databases.isEmpty()) {
+            SystemIO.OUT.println(Color.RED.print("No results found, press enter to continue"));
+            SystemIO.INP.process();
+            return;
+        }
+
+        String line = "";
+        Database database;
+        do {
+            int index = 0;
+            if (databases.size() > 1 || !databaseIdSearch) {
+                ConsoleDatabase.printListDatabase(databases, true);
+                SystemIO.OUT.print(Color.GREEN.print("Choose an option?:"));
+                line = SystemIO.INP.process().toString();
+                try {
+                    index = Integer.parseInt(line) - 1;
+                } catch (NumberFormatException e) {
+                    index = -1;
+                }
+            }
+            database = (index >= 0 && databases.size() > index) ? databases.get(index) : null;
+
+            if (database != null) {
+                oldCommands = DatabaseController.parseDatabaseToInitListCommand(database);
+                ResultListCommand newCommands = Process.argsAndQuestions(args, CommandSchemeCreateOutput.commands, oldCommands);
+                DatabaseRepository.update(
+                    database.id(),
+                    newCommands.string("type"),
+                    newCommands.string("name"),
+                    newCommands.string("path"),
+                    newCommands.string("user"),
+                    newCommands.string("port"),
+                    newCommands.string("password"),
+                    newCommands.string("host")
+                );
+            }
+        } while(database == null && !line.equalsIgnoreCase("0") && !line.equalsIgnoreCase("exit"));
+    }
+
+    /**
      * listDatabase
      * @param args a
      */
     public static void listDatabase(ArrayList<String> args) {
         var list = DatabaseRepository.findAll();
-        SystemIO.OUT.println("");
         if (list.isEmpty()) {
             SystemIO.OUT.println(Color.RED.print("Databases is empty, press enter to continue"));
             SystemIO.INP.process();
             return;
         }
+        ConsoleDatabase.printListDatabase(list, false);
+        SystemIO.OUT.println(Color.RED.print("Press enter to continue"));
+        SystemIO.INP.process();
+    }
+
+    /**
+     * printListDatabase
+     * @param list l
+     */
+    public static void printListDatabase(ArrayList<Database> list, boolean exit) {
         AtomicInteger i = new AtomicInteger(1);
+        SystemIO.OUT.println(Color.BLACK.print(Color.WHITE,TextIO.center("List Database")));
         list.forEach(database -> {
             if (database.type().equalsIgnoreCase("sqlite")) {
                 SystemIO.OUT.println(
-                    Color.BLACK.print(Color.WHITE,"["+ i +"]") + " " +
+                    Color.BLACK.print(Color.WHITE,"("+ i +")") + " " +
                     Color.BLUE.print(database.name() + ":" + database.hash()) + Color.WHITE.print(" (") +
                     Color.PURPLE.print(database.type()) + Color.WHITE.print(" | ") +
                     Color.GREEN.print(database.path()) + Color.WHITE.print(")")
                 );
             } else {
                 SystemIO.OUT.println(
-                    Color.BLACK.print(Color.WHITE,"["+ i +"]") + " " +
+                    Color.BLACK.print(Color.WHITE,"("+ i +")") + " " +
                     Color.BLUE.print(database.name() + ":" + database.hash()) + Color.WHITE.print(" (") +
                     Color.PURPLE.print(database.type()) + Color.WHITE.print(" | ") +
                     Color.PURPLE.print(database.user()) + Color.WHITE.print(" | ") +
@@ -67,35 +130,9 @@ public class ConsoleDatabase {
             }
             i.getAndIncrement();
         });
-        SystemIO.OUT.println("");
-        SystemIO.OUT.println(Color.RED.print("Press enter to continue"));
-        SystemIO.INP.process();
-    }
-
-    /**
-     * main
-     * @param args a
-     */
-    public static void main(String[] args) {
-        DBConnection.outMetaData = false;
-        DBConnection.outMigration = false;
-        DBConnection.outModel = false;
-        ConsoleDatabase.mainCreate(args);
-    }
-
-    /**
-     * mainCreate
-     * @param args a
-     */
-    public static void mainCreate(String[] args) {
-        ConsoleDatabase.createDatabase(new ArrayList<>(Arrays.asList(args)));
-    }
-
-    /**
-     * mainList
-     * @param args a
-     */
-    public static void mainList(String[] args) {
-        ConsoleDatabase.listDatabase(new ArrayList<>(Arrays.asList(args)));
+        if (exit) {
+            SystemIO.OUT.println(Color.BLACK.print(Color.WHITE,"(0)") + Color.RED.print(" Exit continue"));
+        }
+        SystemIO.OUT.println(Color.BLACK.print(Color.WHITE, TextIO.repeat(" ")));
     }
 }

@@ -11,7 +11,6 @@ public class CommandSchemeEditProject {
     public static CommandString PROJECT_NAME = CommandString
         .create("project_id")
         .commands("--projectid", "-proid")
-        .required()
         .message("Project name")
         .value("");
 
